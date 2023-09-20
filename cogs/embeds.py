@@ -6,6 +6,39 @@ class Embeds(commands.Cog):
         self.client = client
 
     @commands.command()
+    async def help(self, ctx, criteria = None):
+      if criteria == None:
+        embed = discord.Embed(
+          title = "**Help Menu**", description = "Capitol Hill's Help Interface" , color = discord.Color.red())
+        embed.add_field(name = "**amendment [amendment]**" , value = "Recites the selected amendment" + "\n\u200b" , inline = True)
+        embed.add_field(name = "**whatis [Court case]**" , value = "Explains a monumental US court case!" + "\n\u200b" , inline = True)
+        embed.add_field(name = "*whatis list**" , value = "Displays a list of court cases that Liberty Bot can display" + "\n\u200b" , inline = True)
+        embed.add_field(name = "**yapms**" , value = "Sends the link to Yet Another Political Map Simulator" + "\n\u200b")
+        embed.add_field(name = "**potus [number]**" , value = "Displays info about the selected president." + "\n\u200b" , inline = True)
+        embed.add_field(name = "**help love**", value = "Shows the help menu for the love commands!")
+        embed.add_field(name = "**help economy**", value = "Shows the help menu for the economy commands! (Coming soon)")
+        embed.set_footer(text = f"Requested by {ctx.author.name}")
+        await ctx.reply(embed=embed)
+      elif criteria == "love":
+        embed = discord.Embed(
+          title = "**Love & Marriage Help Menu**", description = "Capitol Hill's Help Interface" , color = discord.Color.red())
+        embed.add_field(name = "**date @mention**" , value = "Asks out the mentioned person!", inline = False)
+        embed.add_field(name = "**propose @mention**" , value = "Proposes to the mentioned person!" , inline = False)
+        embed.add_field(name = "**marry @mention @mention**" , value = "Marries two mentioned people! Must have the Priest role to execute this command." , inline = False)
+        embed.add_field(name = "**divorce @mention**" , value = "Divorces the mentioned person." , inline = False)
+        embed.add_field(name = "**breakup**" , value = "Breaks you up with your current partner." , inline = False)
+        embed.add_field(name = "**partner**", value = "Displays your current partnership status!", inline = False)
+        embed.set_footer(text = f"Requested by {ctx.author.name}")
+        await ctx.reply(embed=embed)
+      elif criteria == "economy":
+        embed = discord.Embed(
+          title = "**Economy Help Menu**", 
+          description = "COMING SOON!" , 
+          color = discord.Color.red()
+        )
+        await ctx.reply(embed=embed)
+
+    @commands.command()
     async def rules(self, ctx):
       embed_statement = discord.Embed(title = "Capitol Hill's Mission Statement", description = "Capitol Hill is a community of people who want to explore and engage in the United States political system. You may interact as leaders, business people, the press, and regular citizens. We are united by our respect for each other and the goals of the server.", color = discord.Color.blurple())
       await ctx.send(embed=embed_statement)

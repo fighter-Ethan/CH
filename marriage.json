@@ -1,0 +1,14 @@
+{
+    "South": {
+        "status": "2"
+    },
+    "East": {
+        "status": "3"
+    },
+    "West": {
+        "status": "3"
+    },
+    "south": {
+        "status": "3"
+    }
+}

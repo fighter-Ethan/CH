@@ -308,6 +308,18 @@ class Politics(commands.Cog):
         embed.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbaxw9R4sSVjebcCirRujyLxTFMhseMI-7yA&s")
         await ctx.send(embed=embed)
 
+    @commands.command()
+    async def clause(self, ctx, clause = None):
+      if clause == None:
+        await ctx.send("Invalid command!")
+      elif clause == "commerce":
+        embed = discord.Embed(title = "Commerce Clause, in the Constitution of the United States" , description = "Article 1, Section 8, Clause 3" , color = discord.Color.green())
+        embed.add_field(name = "\n\u200b" , value = "*Congress shall have the power... to regulate commerce with foreign nations, and among the several states, and with the Indian tribes;*" , inline = True)
+        embed.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbaxw9R4sSVjebcCirRujyLxTFMhseMI-7yA&s")
+        await ctx.send(embed=embed)
+
+
+
 async def setup(bot):
   await bot.add_cog(Politics(bot))
   print("My Politics Cog Has Successfully Loaded!")

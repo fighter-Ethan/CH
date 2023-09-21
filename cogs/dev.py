@@ -15,7 +15,11 @@ class Dev(commands.Cog):
       source_embed.set_footer(text = "Licensed under GNU General Licensing v3.0. Property of Auxillium DB.")
       await ctx.reply(embed = source_embed)
 
+    @commands.command()
+    async def ping(self, ctx):
+      await ctx.send(':ping_pong: {0}'.format(round(self.client.latency * 1000 , 0)) + "ms")
+      
 async def setup(bot):
   await bot.add_cog(Dev(bot))
-  print("My Politics Cog Has Successfully Loaded!")
+  print("My Dev Cog Has Successfully Loaded!")
   return True

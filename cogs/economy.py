@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-class Dev(commands.Cog):
+class Economy(commands.Cog):
     def __init__(self, client):
         self.client = client
 
@@ -12,6 +12,6 @@ class Dev(commands.Cog):
         
 
 async def setup(bot):
-  await bot.add_cog(Dev(bot))
+  await bot.add_cog(Economy(bot))
   print("My Developer Utilities Cog Has Successfully Loaded!")
   return True

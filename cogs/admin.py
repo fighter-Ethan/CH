@@ -4,7 +4,7 @@ from discord.ext import commands
 class Admin(commands.Cog):
     def __init__(self, client):
         self.client = client
-
+ 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):

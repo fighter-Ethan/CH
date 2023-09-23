@@ -10,7 +10,7 @@ class Admin(commands.Cog):
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         await member.kick(reason=reason)
         await ctx.send(f"{member.mention} has been kicked.")
-
+ 
     @commands.command()
     @commands.has_permissions(manage_messages = True)
     async def purge(self, ctx, amt = 1):

@@ -55,6 +55,7 @@ class Embeds(commands.Cog):
       embed_rules.add_field(name = "\n\u200b", value = "**10.** Do not intentionally rig elections. [Class III]" , inline = False)
       embed_rules.add_field(name = "\n\u200b", value = "**11.** Do not mass invite people before elections. [Class III]" , inline = False)
       embed_rules.add_field(name = "\n\u200b", value = "**12.** The rules may be updated or edited at any time by staff, with or without notice." , inline = False)
+      embed_rules.add_field(name = "\n\u200b", value = "**13.** You may not advertise other servers, in ANY server of the Capitol Hill network, without the explicit permission of Server Staff/Partnership Team leadership. [Class II]" , inline = False)
       await ctx.send(embed=embed_rules)
 
     @commands.command()
@@ -74,7 +75,7 @@ class Embeds(commands.Cog):
       await ctx.send(embed = embed)
 
     @commands.command()
-    async def party_brief(self, ctx, Name = None, Description = None, PartyLeader = None, PartyCharter = None, PartyIdeology = None, PolComp = None, WikiPage = None, Thumbnail = None, CustomColor = None):
+    async def party_brief(self, ctx, Name = None, Description = None, PartyLeader = None, PartyCharter = None, PartyIdeology = None, PolComp = None, Thumbnail = None, CustomColor = None):
       sixteenIntegerHex = int(CustomColor.replace("#", ""), 16)
       readableHex = int(hex(sixteenIntegerHex), 0)
       embed = discord.Embed(

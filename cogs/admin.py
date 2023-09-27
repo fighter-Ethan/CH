@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import asyncio
 
 class Admin(commands.Cog):
     def __init__(self, client):
@@ -25,35 +26,28 @@ class Admin(commands.Cog):
         await ctx.send(ctx.message.channel, "Looks like you don't have the permissions needed.")
 
     @commands.command()
-    @commands.has_role(1060431985711009904)
+    @commands.has_role(1140349395334873119)
     async def verify(self, ctx, user : discord.Member):
 
       Unverify = discord.utils.get(ctx.guild.roles, name="Unverified")
-      welcomechat = client.get_channel(1140349395334873119)
+      welcomechat = self.client.get_channel(1065320854059225118)
 
       await ctx.send(f"Verifying {user.mention}.")
       await asyncio.sleep(1.5)
       await ctx.channel.purge(limit = 2)
       await user.remove_roles(Unverify)
 
-      if verify.error:
-        await welcomechat.send(f"{user.mention}")
-        embed = discord.Embed(title = "**Welcome to Capitol Hill!**", description = f"Please welcome {user.name}!", color = discord.Color.green())
-        embed.set_footer(text = f"Verified by {ctx.author.name}")
-        embed.set_image(url = "https://i.imgur.com/ged66wF.png")
-        await welcomechat.send(embed=embed)
+      await welcomechat.send(f"{user.mention}")
+      embed = discord.Embed(title = "**Welcome to Capitol Hill!**", description = f"Please welcome {user.name}!", color = discord.Color.green())
+      embed.add_field(name = "**Getting Started**", value = "To get started, you can head over to <#1150207359117959198> to join the House, or wait for an election!")
+      embed.set_footer(text = f"Verified by {ctx.author.name}")
+      embed.set_image(url = "https://i.imgur.com/ged66wF.png")
+      await welcomechat.send(embed=embed)
   
-      if not verify.error:
-  
-        await user.send("Welcome to **Capitol Hill!** To start out, please sign up for local congress or, if open, federal!")
-
-        await welcomechat.send(f"{user.mention}")
-        embed = discord.Embed(title = "**Welcome to Capitol Hill!**", description = f"Please welcome {user.name}!", color = discord.Color.green())
-        embed.set_image(url = "https://i.imgur.com/ged66wF.png")
-        await welcomechat.send(embed=embed)
+      
 
     @verify.error
-    async def verify_error(ctx, error):
+    async def verify_error(self, ctx, error):
       embed = discord.Embed(
         title = "Permissions Error", 
         description = f"{ctx.author.name}, you cannot execute this command!" + "\n\u200b" + "Error: " + str(error), 

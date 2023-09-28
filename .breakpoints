@@ -3,9 +3,9 @@
     "cogs/admin.py": [
       {
         "id": "0be7113b-6067-4695-87de-ee5b8b404659",
-        "line": 27,
-        "version": 580,
-        "index": 827
+        "line": 28,
+        "version": 773,
+        "index": 842
       }
     ]
   }

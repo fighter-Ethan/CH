@@ -317,7 +317,7 @@ class Love(commands.Cog):
               inline=False
             )
             await ctx.send(embed=embed)
-
+  
     @commands.command(aliases = ["break_up"])
     async def breakup(self, ctx):
       with open("engaged.json", "r") as f:

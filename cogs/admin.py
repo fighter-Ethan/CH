@@ -5,20 +5,25 @@ import asyncio
 class Admin(commands.Cog):
     def __init__(self, client):
         self.client = client
+  
+    @commands.hybrid_command(name="kick", description="Kicks a member from the server. Must be a member of Server Staff to execute this command!.")
+    @commands.has_role(1060313658053361754)
+    async def kick(self, ctx: commands.Context, member: discord.Member, *, reason=None) -> None:
+      await member.kick(reason=reason)
+      await ctx.reply(f"{member.mention} has been kicked.")
+      
+    @kick.error
+    async def kick_error(self, ctx, error): 
+      if isinstance(error, commands.MissingRole):
+       await ctx.reply("You do not have permission to use this command.")   
  
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def kick(self, ctx, member: discord.Member, *, reason=None):
-        await member.kick(reason=reason)
-        await ctx.send(f"{member.mention} has been kicked.")
- 
-    @commands.command()
-    @commands.has_permissions(manage_messages = True)
-    async def purge(self, ctx, amt = 1):
-      if amt == 1:
+    @commands.hybrid_command(name = "purge", description = "Deletes a specified amount of messages. Must be a member of Server Staff to execute this command!.")
+    @commands.has_role(1060313658053361754)
+    async def purge(self, ctx: commands.Context, amount = 1) -> None:
+      if amount == 1:
         await ctx.channel.purge(limit = 2)
       else:
-        await ctx.channel.purge(limit = amt + 1)
+        await ctx.channel.purge(limit = amount + 1)
 
     @purge.error
     async def purge_error(error, ctx):

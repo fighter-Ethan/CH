@@ -347,7 +347,7 @@ class Politics(commands.Cog):
         embed.set_image(url = image)
         await ctx.channel.purge(limit = 1)
         await ctx.send(embed=embed)
-      
+
 
 async def setup(bot):
   await bot.add_cog(Politics(bot))

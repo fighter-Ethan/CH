@@ -106,5 +106,5 @@ pattern = "**/*.py"
 start = "pylsp"
 
 [deployment]
-run = ["sh", "-c", "run-deploy"]
+run = ["sh", "-c", "python main.py"]
 deploymentTarget = "cloudrun"

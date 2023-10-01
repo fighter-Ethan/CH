@@ -30,17 +30,19 @@ class Admin(commands.Cog):
       if isinstance(error, CheckFailure):
         await ctx.send(ctx.message.channel, "Looks like you don't have the permissions needed.")
 
-    @commands.command()
+    @commands.hybrid_command(name = "verify", description = "Verifies a user. Must be a member of Server Staff to execute this command!")
     @commands.has_role(1140349395334873119)
-    async def verify(self, ctx, user : discord.Member):
+    async def verify(self, ctx: commands.Context, user : discord.Member) -> None:
 
       Unverify = discord.utils.get(ctx.guild.roles, name="Unverified")
+      Verify = discord.utils.get(ctx.guild.roles, name="Unverified")
       welcomechat = self.client.get_channel(1065320854059225118)
 
       await ctx.send(f"Verifying {user.mention}.")
       await asyncio.sleep(1.5)
       await ctx.channel.purge(limit = 2)
       await user.remove_roles(Unverify)
+      await user.add_roles(Verify)
 
       await welcomechat.send(f"{user.mention}")
       embed = discord.Embed(title = "**Welcome to Capitol Hill!**", description = f"Please welcome {user.name}!", color = discord.Color.green())

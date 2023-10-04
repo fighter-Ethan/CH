@@ -35,7 +35,7 @@ class Admin(commands.Cog):
     async def verify(self, ctx: commands.Context, user : discord.Member) -> None:
 
       Unverify = discord.utils.get(ctx.guild.roles, name="Unverified")
-      Verify = discord.utils.get(ctx.guild.roles, name="Unverified")
+      Verify = discord.utils.get(ctx.guild.roles, name="Verified")
       welcomechat = self.client.get_channel(1065320854059225118)
 
       await ctx.send(f"Verifying {user.mention}.")
@@ -81,6 +81,7 @@ class Admin(commands.Cog):
       embed.add_field(name = "**Comments**" , value = crit , inline = False)
       embed.set_footer(text = f"Denied by {ctx.author.name}")
       await ctx.send(embed = embed)
+
 
 async def setup(bot):
   await bot.add_cog(Admin(bot))

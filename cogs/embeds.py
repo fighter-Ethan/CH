@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import asyncio
 
 class Embeds(commands.Cog):
     def __init__(self, client):
@@ -58,20 +59,116 @@ class Embeds(commands.Cog):
       embed_rules.add_field(name = "\n\u200b", value = "**13.** You may not advertise other servers, in ANY server of the Capitol Hill network, without the explicit permission of Server Staff/Partnership Team leadership. [Class II]" , inline = False)
       await ctx.send(embed=embed_rules)
 
-    @commands.command()
-    async def custom_embed(self, ctx, Title = None, Description = None, BodyTitle = None, BodyText = None, Thumbnail = None, FooterText = None):
+    @commands.hybrid_command(name = "senate_leadership", description = "Make an embed showing senate leaders! Must be server staff.")
+    @commands.has_role(1140349395334873119)
+    async def senate_leadership(self, ctx, term = None, vpotus: discord.Member = None, ppt: discord.Member = None, senmajldr: discord.Member = None, senminldr: discord.Member = None):
       embed = discord.Embed(
-        title = Title,
-        description = Description,
+        title = "Senate Leadership",
+        description = "*" + term + "*",
+        color = discord.Color.blurple()
+      )
+      if vpotus != None:
+        embed.add_field(
+          name = "Vice President",
+          value = vpotus.mention,
+          inline = False
+        )
+      if ppt != None:
+        embed.add_field(
+          name = "President Pro-Tempore",
+          value = ppt.mention,
+          inline = False
+        )
+      if senmajldr != None:
+        embed.add_field(
+          name = "Senate Majority Leader",
+          value = senmajldr.mention,
+          inline = False
+        )
+      if senminldr != None:
+        embed.add_field(
+          name = "Senate Minority Leader",
+          value = senminldr.mention,
+          inline = False
+        )
+      embed.set_footer(text = "Capitol Hill Senate")
+      embed.set_thumbnail(url = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Seal_of_the_United_States_Senate.svg/2000px-Seal_of_the_United_States_Senate.svg.png")
+      await ctx.send(embed=embed)
+
+    @commands.hybrid_command(name = "house_leadership", description = "Make an embed showing house leaders! Must be server staff.")
+    @commands.has_role(1140349395334873119)
+    async def house_leadership(self, ctx, term = None, speaker: discord.Member = None, spt: discord.Member = None, hmajldr: discord.Member = None, hmajw: discord.Member = None, hminldr: discord.Member = None, hminw: discord.Member = None):
+      embed = discord.Embed(
+        title = "House Leadership",
+        description = "*" + term + "*",
+        color = discord.Color.blurple()
+      )
+      if speaker != None:
+        embed.add_field(
+          name = "Speaker of the House",
+          value = speaker.mention,
+          inline = False
+        )
+      if spt != None:
+        embed.add_field(
+          name = "Speaker Pro-Tempore",
+          value = spt.mention,
+          inline = False
+        )
+      if hmajldr != None:
+        embed.add_field(
+          name = "House Majority Leader",
+          value = hmajldr.mention,
+          inline = False
+        )
+      if hmajw != None:
+        embed.add_field(
+          name = "House Majority Whip",
+          value = hmajw.mention,
+          inline = False
+        )
+      if hminldr != None:
+        embed.add_field(
+          name = "House Minority Leader",
+          value = hminldr.mention,
+          inline = False
+        )
+      if hminw != None:
+        embed.add_field(
+          name = "House Minority Whip",
+          value = hminw.mention,
+          inline = False
+        )
+      embed.set_footer(text = "Capitol Hill House")
+      embed.set_thumbnail(url = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Seal_of_the_United_States_House_of_Representatives.svg/1030px-Seal_of_the_United_States_House_of_Representatives.svg.png")
+      await ctx.send(embed=embed)
+  
+    @commands.hybrid_command(name="custom_embed", description = "Create a custom embed!")
+    async def custom_embed(self, ctx: commands.Context, title = None, description = None, body_title_1 = None, body_text_1 = None, body_title_2 = None, body_text_2 = None, body_title_3 = None, body_text_3 = None, thumbnail = None, footertext = None) -> None:
+      embed = discord.Embed(
+        title = title,
+        description = description,
         color = discord.Color.blue()
       )
       embed.add_field(
-        name = BodyTitle,
-        value = BodyText,
+        name = bodytitle,
+        value = bodytext,
         inline = False
       )
-      embed.set_thumbnail(url = Thumbnail)
-      embed.set_footer(text = FooterText)
+      embed.set_thumbnail(url = thumbnail)
+      embed.set_footer(text = footertext)
+      if body_title_2 != None:
+        embed.add_field(
+          name = body_title_2,
+          value = body_text_2,
+          inline = False
+        )
+      if body_title_3 != None:
+        embed.add_field(
+          name = body_title_3,
+          value = body_text_3,
+          inline = False
+        )
       await ctx.send(embed = embed)
 
     @commands.command()

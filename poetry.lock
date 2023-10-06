@@ -434,14 +434,6 @@ global = ["appdirs (>=1.4.4)"]
 validation = ["pydantic (>=1.7.4)"]
 
 [[package]]
-name = "pytz"
-version = "2023.3.post1"
-description = "World timezone definitions, modern and historical"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "replit"
 version = "3.2.4"
 description = "A library for interacting with features of repl.it"
@@ -634,7 +626,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8.0,<3.9"
-content-hash = "a06028286d297f91852ecd5bdaea51ca0b97e21b7c66c5fab0866f1a557036fd"
+content-hash = "9dc0c68ce492fa5360e13cf2169857d8a176b546bf920c147dfa54cdf4220367"
 
 [metadata.files]
 aiohttp = []
@@ -672,7 +664,6 @@ python-dotenv = []
 python-lsp-jsonrpc = []
 python-lsp-server = []
 pytoolconfig = []
-pytz = []
 replit = []
 requests = []
 rope = []

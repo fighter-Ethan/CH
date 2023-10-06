@@ -6,7 +6,8 @@ import random
 import time
 import asyncio
 import datetime
-from datetime import datetime
+from typing import Literal
+from datetime import datetime, timedelta
 
 class economy(commands.Cog):
     def __init__(self, client):
@@ -36,9 +37,7 @@ class economy(commands.Cog):
         inline = False
       )
       leaderboard.set_thumbnail(url = "https://cdn-icons-png.flaticon.com/512/3716/3716691.png")
-      tz = pytz.timezone('America/New_York')
-      now = datetime.now(tz)
-      leaderboard.set_footer(text = f"Last Updated {now.strftime('%Y-%m-%d at %I:%M %p')} EST")
+      leaderboard.set_footer(text = f"Requested by {ctx.author.name}", icon_url = ctx.author.display_avatar.url)
       await ctx.send(embed = leaderboard)
 
 
@@ -137,12 +136,11 @@ class economy(commands.Cog):
         await ctx.reply(embed = balance)
 
     @commands.hybrid_command(name="add_money", description = "Add money to a player!")  
-    @commands.has_role(1144695813436604576)
+    @commands.has_role(1060315345266683955)
     @app_commands.describe(
       user = "The user you want to add money to",
       amount = "The amount of money you want to add",
     )
-    @commands.has_role(1144695813436604576)
     async def add_money(self, ctx: commands.Context, user : discord.Member = None, amount = None) -> None:
       with open(f"cogs/bank.json", "r") as f:
         bank = json.load(f)
@@ -171,7 +169,7 @@ class economy(commands.Cog):
       user = "The user you want to remove money from",
       amount = "The amount of money you want to remove",
     )
-    @commands.has_role(1144695813436604576)
+    @commands.has_role(1060315345266683955)
     async def remove_money(self, ctx: commands.Context, user : discord.Member = None, amount = None) -> None:
       with open(f"cogs/bank.json", "r") as f:
         bank = json.load(f)
@@ -468,7 +466,7 @@ class economy(commands.Cog):
       color="The color of the roulette wheel to bet on",
       amount="The amount of money to bet",
     )
-    async def roulette(self, ctx: commands.Context, color = None, amount = None) -> None:
+    async def roulette(self, ctx: commands.Context, color: Literal["red","black"], amount = None) -> None:
       winning_color = random.choice(["🟥", "⬛️"])
       winning_color_text = "none"
       if winning_color == "🟥":
@@ -575,8 +573,8 @@ class economy(commands.Cog):
       shop.set_footer(text = f"{ctx.author.name}" + " | Page 1/1", icon_url = user.display_avatar.url)
       await ctx.reply(embed = shop)
 
-    @commands.command()
-    async def buy(self, ctx, item, amount: int = 1):
+    @commands.hybrid_command(name="buy", description="Buy from the server store!")
+    async def buy(self, ctx: commands.Context, item, amount: int = 1) -> None:
       with open(f"cogs/bank.json", "r") as f:
         bank = json.load(f)
       with open(f"cogs/inventory.json", "r") as f:

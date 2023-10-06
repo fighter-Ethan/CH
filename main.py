@@ -18,7 +18,7 @@ load_dotenv()
 
 @client.event
 async def on_ready():
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Love & Marriage | .help"))
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Economy | .help"))
     print('Bot is ready')
     for f in os.listdir("./cogs"):
         if f.endswith(".py"):

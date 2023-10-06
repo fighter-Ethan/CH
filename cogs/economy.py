@@ -7,7 +7,6 @@ import time
 import asyncio
 import datetime
 from datetime import datetime
-import pytz
 
 class economy(commands.Cog):
     def __init__(self, client):

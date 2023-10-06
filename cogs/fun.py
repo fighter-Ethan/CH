@@ -52,7 +52,7 @@ class Fun(commands.Cog):
           await ctx.send(joke)
 
     @commands.command()
-    async def roulette(self, ctx):
+    async def rr(self, ctx):
       brazild = (random.randint(0 , 6))
       if brazild < 4:
         await ctx.send("*Click*" + "\n\u200b" + "\n\u200b" + random.choice(rrmatrix))
@@ -60,10 +60,6 @@ class Fun(commands.Cog):
         await ctx.send("**BANG!**" + "\n\u200b" + "https://78.media.tumblr.com/80b50d102cdf69e5c172d4cbe336f10d/tumblr_mvc0oeWuPY1qd9rjto1_500.gif")
       elif brazild == 5:
         await ctx.send("**BANG!**" + "\n\u200b" + "https://78.media.tumblr.com/80b50d102cdf69e5c172d4cbe336f10d/tumblr_mvc0oeWuPY1qd9rjto1_500.gif")
-
-    @commands.command(aliases = ['russian-roulette', 'bj', 'blackjack', 'dep', 'bal', 'with', 'deposit', 'balance', 'withdraw', 'pay', 'give', 'lb', 'leaderboard', 'collect', 'buy'])
-    async def rr(self, ctx):
-      varpass = "True"
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)

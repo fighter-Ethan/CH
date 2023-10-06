@@ -61,8 +61,8 @@ class Admin(commands.Cog):
         color = discord.Color.red())
       await ctx.send(embed=embed)
 
-    @commands.command()
-    async def accept(self, ctx , user : discord.Member , role : discord.Role, crit = "None Provided"):
+    @commands.hybrid_command(name="accept" , description="Accepts a user's application to a department. Must be a member of department leadership to use this!")
+    async def accept(self, ctx: commands.Context , user : discord.Member , role : discord.Role, crit = "None Provided") -> None:
       await ctx.channel.purge(limit = 1)
       await ctx.send(f"{user.mention}")
       embed = discord.Embed(title = f"**{user.name}**" , description = "*Welcome to the Team!*" , color = discord.Color.green())
@@ -72,8 +72,8 @@ class Admin(commands.Cog):
       await ctx.send(embed = embed)
       await user.add_roles(role)
 
-    @commands.command()
-    async def deny(self, ctx , user : discord.Member , role : discord.Role, crit = "None Provided"):
+    @commands.hybrid_command(name="deny" , description="Denies a user's application to a department. Must be a member of department leadership to use this!")
+    async def deny(self, ctx: commands.Context , user : discord.Member , role : discord.Role, crit = "None Provided") -> None:
       await ctx.channel.purge(limit = 1)
       await ctx.send(f"{user.mention}")
       embed = discord.Embed(title = f"{user.name}" , description = "Application Rejected." , color = discord.Color.red())

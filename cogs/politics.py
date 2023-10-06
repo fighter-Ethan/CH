@@ -318,35 +318,30 @@ class Politics(commands.Cog):
         embed.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbaxw9R4sSVjebcCirRujyLxTFMhseMI-7yA&s")
         await ctx.send(embed=embed)
 
-    @commands.command()
-    async def administration(self, ctx, admin = None, term = None, years = None, potus = None, VPOTUS = None, image = None, color = None):
+    @commands.hybrid_command(name="administration", description="Get info about the administration.")
+    async def administration(self, ctx: commands.Context, admin = None, term = None, years = None, potus = None, vpotus = None, image = None, color = None) -> None:
       sixteenIntegerHex = int(color.replace("#", ""), 16)
       readableHex = int(hex(sixteenIntegerHex), 0)
+      embed = discord.Embed(
+        title = f"The {admin} Administration",
+        description = f"*Term {term}, {years}*",
+        color = readableHex
+      )
+      embed.add_field(name = "\n\u200b" , value = f"**President:** {potus}" , inline = False)
+      embed.add_field(name = "\n\u200b" , value = f"**Vice President:** {vpotus}" , inline = False)
+      embed.set_image(url = image)
       if admin == None:
         await ctx.send("Please include the name of the Administration (e.g. The Biden Administration")
       elif term == None:
         await ctx.send("Please list what term the administration is. (e.g. Term 2)")
       elif years == None:
         await ctx.send("Please list what years the administration took place. (e.g. 2021-2025)")
-      elif potus == None:
-        await ctx.send("Please list who was the President during the term. (e.g. Joe Biden (D-DE)")
-      elif VPOTUS == None:
-        await ctx.send("Please list who was the Vice President during the term. (e.g. Kamala Harris (D-NY)")
       elif image == None:
         await ctx.send("Please include an image of the President.")
       elif color == None:
         await ctx.send("Please include a color for the Administration.")
-      else:
-        embed = discord.Embed(
-          title = f"The {admin} Administration",
-          description = f"*Term {term}, {years}*",
-          color = readableHex
-        )
-        embed.add_field(name = "\n\u200b" , value = f"**President:** {potus}" , inline = False)
-        embed.add_field(name = "\n\u200b" , value = f"**Vice President:** {VPOTUS}" , inline = False)
-        embed.set_image(url = image)
-        await ctx.channel.purge(limit = 1)
-        await ctx.send(embed=embed)
+      await ctx.send(embed=embed)
+
 
 
 async def setup(bot):

@@ -10,8 +10,8 @@ class Love(commands.Cog):
     rrmatrix = [f"'The body cannot live without the mind.' -Morpheus, The Matrix" , f"'Ever have that feeling where you’re not sure if you’re awake or dreaming?'' -Neo, The Matrix" , f"'I don’t like the idea that I’m not in control of my life.'' -Neo, The Matrix" , f"'Never tell me the odds!' - Han Solo, Star Wars", f"'It's time to spin the chamber, Boris.' -DeAngelo, The Office (US)", f"'Do not throw away your shot...' -Alexander Hamilton, Hamilton" , f"'Guns. Lots of guns.' -Neo, The Matrix"]
   
 
-    @commands.command() 
-    async def propose(self, ctx, member : discord.Member):
+    @commands.hybrid_command(name = "propose", description = "Propose to someone") 
+    async def propose(self, ctx: commands.Context, member : discord.Member) -> None:
       if member.bot:
         await ctx.send("You can't propose to a bot!")
       elif member.id == ctx.author.id:
@@ -39,8 +39,8 @@ class Love(commands.Cog):
           await member.send(f"{ctx.author.mention} has declined your proposal.")
           await ctx.send(f"{ctx.author.mention} has declined the proposal from {member.mention}." + "\n\u200b" + "https://media1.giphy.com/media/TY3bikeN6R4DS2wpcN/giphy.gif")
 
-    @commands.command(aliases = ["ask_out"])
-    async def date(self, ctx, member : discord.Member):
+    @commands.hybrid_command(name = "date", description = "Ask someone to start dating you", aliases = ["ask_out"])
+    async def date(self, ctx: commands.Context, member : discord.Member) -> None:
       if member.bot:
         await ctx.send("You can't ask out a bot!")
       elif member.id == ctx.author.id:
@@ -49,7 +49,7 @@ class Love(commands.Cog):
         await ctx.send(f"{ctx.author.mention} has asked out {member.mention}. Type `yes` or `no` to accept or decline.")
         def check(message):
           return message.author == member and message.channel == ctx.channel
-        msg = await client.wait_for('message', timeout=30.0, check=check)
+        msg = await self.client.wait_for('message', timeout=30.0, check=check)
         if msg.content.lower() == "yes":
           await ctx.send(f"{member.mention} has accepted the date from {ctx.author.mention}. They are now dating!") 
           user = ctx.author
@@ -70,7 +70,7 @@ class Love(commands.Cog):
           await ctx.send(f"{ctx.author.mention} has declined the date request from {member.mention}.")
 
     @date.error
-    async def date_error(ctx, error):
+    async def date_error(self, ctx, error):
       if isinstance(error, commands.MissingRequiredArgument):
         embed = discord.Embed(
           title = "Error!",
@@ -82,9 +82,9 @@ class Love(commands.Cog):
         await asyncio.sleep(5)
         await ctx.channel.purge(limit=2)
 
-    @commands.command()
+    @commands.hybrid_command(name = "marriage_law", description = "Set the law for marriage in a certain state")
     @commands.has_any_role("Administrator","Server Co-Owner", "Server Owner")
-    async def marriage_law(self, ctx, state = None, status = None):
+    async def marriage_law(self, ctx: commands.Context, state = None, status = None) -> None:
       if state == None:
         embed = discord.Embed(
         title = "Error!",
@@ -116,9 +116,9 @@ class Love(commands.Cog):
     
         await ctx.send(f"The marriage laws for {state} have been updated.")
 
-    @commands.command()
+    @commands.hybrid_command(name="marry", description = "Marry two users together")
     @commands.has_role("Priest")
-    async def marry(self, ctx, member : discord.Member, user : discord.Member):
+    async def marry(self, ctx: commands.Context, member : discord.Member, user : discord.Member) -> None:
       with open("married.json", "r") as f:
         married = json.load(f)
       with open("gender.json", "r") as f:
@@ -238,8 +238,8 @@ class Love(commands.Cog):
       if isinstance(error, commands.MissingRole):
         await ctx.send("You do not have the Priest role.")
 
-    @commands.command()
-    async def gender(self, ctx, *, criterion = None):
+    @commands.hybrid_command(name = "gender", description = "Set or view your gender")
+    async def gender(self, ctx: commands.Context, *, criterion = None) -> None:
       with open('gender.json', 'r') as f:
         gender = json.load(f)
       if criterion == None:
@@ -270,8 +270,8 @@ class Love(commands.Cog):
         with open('gender.json', 'w') as f:
           gender = json.dump(gender, f)
 
-    @commands.command()
-    async def partner(self, ctx):
+    @commands.hybrid_command(name = "partner", description = "View your partnership status")
+    async def partner(self, ctx: commands.Context) -> None:
       with open("engaged.json", "r") as f:
         engaged = json.load(f)
       with open("dating.json", "r") as f:
@@ -318,8 +318,8 @@ class Love(commands.Cog):
             )
             await ctx.send(embed=embed)
   
-    @commands.command(aliases = ["break_up"])
-    async def breakup(self, ctx):
+    @commands.hybrid_command(name = "breakup", description = "Break up with a user", aliases = ["break_up"])
+    async def breakup(self, ctx: commands.Context) -> None:
       with open("engaged.json", "r") as f:
         engaged = json.load(f)
       with open("dating.json", "r") as f:
@@ -343,8 +343,8 @@ class Love(commands.Cog):
       elif married_text is not None:
         await ctx.send("You cannot break up with your spouse! Divorce them iinstead with `.divorce`.")
 
-    @commands.command()
-    async def divorce(self, ctx):
+    @commands.hybrid_command(name = "divorce", description = "Divorce your spouse")
+    async def divorce(self, ctx: commands.Context) -> None:
       with open("married.json", "r") as f:
         married = json.load(f)
       with open("engaged.json", "r") as f:

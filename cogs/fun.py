@@ -9,23 +9,23 @@ class Fun(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases = ["compat" , "lovers"])
-    async def compatibility(self, ctx , user : discord.Member , member : discord.Member):
-      if user.mention == "<@978047356983455815>" or member.mention == "<@978047356983455815>":
+    @commands.hybrid_command(name="compatibility", description = "Tests the romantic compatibility of two users!", aliases = ["compat" , "lovers"])
+    async def compatibility(self, ctx: commands.Context, user1 : discord.Member , user2 : discord.Member) -> None:
+      if user1.mention == "<@978047356983455815>" or user2.mention == "<@978047356983455815>":
         await ctx.send("Don't try to ship me! I'm taken.")
-      elif user.mention == member.mention:
+      elif user1.mention == user2.mention:
         await ctx.send("wtf... don't ship yourself with yourself.")
       else:
         loverate = random.randint(0 , 100)
         embed = discord.Embed(
-        title = ":heart:Compatability Tester:heart:" , description = user.mention + " + " + member.mention, color  = discord.Color.green())
+        title = ":heart:Compatability Tester:heart:" , description = user1.mention + " + " + user2.mention, color  = discord.Color.green())
         embed.add_field(name = "Compatability Rate: " , value = str(loverate) + "%", inline = True)
         embed.set_thumbnail(url = "https://www.northeastohioparent.com/wp-content/uploads/2021/01/Cupid.png")
         embed.set_footer(text = "Come up with a good ship name for these two lovebirds!") 
         await ctx.send(embed=embed)
 
-    @commands.command()
-    async def dox(self, ctx, user : discord.Member = None):
+    @commands.hybrid_command(name = "dox", description = "Dox your enemies!")
+    async def dox(self, ctx: commands.Context, user : discord.Member = None) -> None:
       if user == None:
         await ctx.send("You can't dox nobody, idiot!")
       elif user.id == 978047356983455815:
@@ -38,8 +38,8 @@ class Fun(commands.Cog):
         await asyncio.sleep(2)
         await doxe.edit(content = newdoxe)
 
-    @commands.command()
-    async def joke(ctx, topic = None):
+    @commands.hybrid_command(name="joke", description = "Tells a joke!")
+    async def joke(ctx: commands.Context, topic = None) -> None:
       if topic == None:
         response = requests.get("https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,racist,sexist,explicit")
         data = response.json()
@@ -51,8 +51,8 @@ class Fun(commands.Cog):
           joke = data["joke"]
           await ctx.send(joke)
 
-    @commands.command()
-    async def rr(self, ctx):
+    @commands.hybrid_command(name = "russian_roulette", description = "Plays Russian Roulette!")
+    async def rr(self, ctx: commands.Context) -> None:
       brazild = (random.randint(0 , 6))
       if brazild < 4:
         await ctx.send("*Click*" + "\n\u200b" + "\n\u200b" + random.choice(rrmatrix))
@@ -61,9 +61,9 @@ class Fun(commands.Cog):
       elif brazild == 5:
         await ctx.send("**BANG!**" + "\n\u200b" + "https://78.media.tumblr.com/80b50d102cdf69e5c172d4cbe336f10d/tumblr_mvc0oeWuPY1qd9rjto1_500.gif")
 
-    @commands.command()
+    @commands.hybrid_command(name = "topic", description = "Gives a topic to talk about and discuss")
     @commands.cooldown(1, 3, commands.BucketType.user)
-    async def topic(self, ctx):
+    async def topic(self, ctx: commands.Context) -> None:
       topic = [ 
         'Who was the best President of the United States? Why?', 'Do you code? What language?', 
         'Who is your favorite Avenger?', 

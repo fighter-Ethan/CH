@@ -5,9 +5,9 @@ class Politics(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
-    async def potus(self, ctx, * , number = "N/A"):
-      if number == "N/A":
+    @commands.hybrid_command(name = "potus", description = "Get information about a United States Presient by typing the number")
+    async def potus(self, ctx: commands.Context, * , number = None) -> None:
+      if number == None:
         await ctx.send("Please specify a number between 1-46!")
       elif number == "1":
         await ctx.send("https://www.potus.com/george-washington/")
@@ -103,8 +103,8 @@ class Politics(commands.Cog):
       elif number == "46":
         await ctx.send("https://www.potus.com/joe-biden/")
 
-    @commands.command()
-    async def whatis(ctx , * , content = "NA"):
+    @commands.hybrid_command(name = "what_is", description = "Gets information about a court case")
+    async def whatis(ctx: commands.Context, * , content = "NA") -> None:
       if content == "Plessy v Ferguson":
         embed = discord.Embed(title = "**Plessy v Ferguson**" , description = "May 18, 1896" , color = discord.Color.green())
         embed.add_field(name = "\n\u200b" , value = "With the cooperation of the East Louisiana Railroad, on June 7, 1892, Homer Plessy, a mulatto (7/8 white), seated himself in a white compartment, was challenged by the conductor, and was arrested and charged with violating the state law. In the Criminal District Court for the Parish of Orleans, Tourgée argued that the law requiring “separate but equal accommodations” was unconstitutional. When Judge John H. Ferguson ruled against him, Plessy applied to the State Supreme Court for a writ of prohibition and certiorari. Although the court upheld the state law, it granted Plessy’s petition for a writ of error that would enable him to appeal the case to the Supreme Court." , inline = True)
@@ -132,32 +132,9 @@ class Politics(commands.Cog):
         await ctx.send("You must enter something into the command!")
       else:
         await ctx.send("Court case not found!")
-  
-    @commands.command()
-    async def addpotus(self, ctx):
-      await ctx.send("What is the President's name?")
-      potusname = await client.wait_for("message")
-      await ctx.channel.purge(limit = 3)
-      await ctx.send("What party are they in?")
-      potusparty = await client.wait_for("message")
-      await ctx.channel.purge(limit = 2)
-      await ctx.send("What year were they elected in?")
-      potuselect = await client.wait_for("message")
-      await ctx.channel.purge(limit = 2)
-      await ctx.send("What year did their term end? (If current, please just type present!)")
-      potusend = await client.wait_for("message")
-      await ctx.channel.purge(limit = 2)
-      await ctx.send("Finally, add their portrait! MUST BE A LINK!")
-      potuspic = await client.wait_for("message")
-      await ctx.channel.purge (limit = 2)
-      embed = discord.Embed(title = "**President of the United States**" , description = potusname.content , color = discord.Color.blue())
-      embed.add_field(name = "**Party**" , value = potusparty.content , inline = True)
-      embed.add_field(name = "**Term**" , value = potuselect.content + "-" + potusend.content)
-      embed.set_thumbnail(url = potuspic.content)
-      await ctx.send(embed=embed)
 
-    @commands.command()
-    async def amendment(self, ctx, *, number = None):
+    @commands.hybrid_command(name = "amendment", description = "Get information about an amendment")
+    async def amendment(self, ctx: commands.Context, *, number = None) -> None:
       if number == None:
         await ctx.send("Please specify the amendment!")
       elif number == "1":
@@ -308,8 +285,8 @@ class Politics(commands.Cog):
         embed.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbaxw9R4sSVjebcCirRujyLxTFMhseMI-7yA&s")
         await ctx.send(embed=embed)
 
-    @commands.command()
-    async def clause(self, ctx, clause = None):
+    @commands.hybrid_command(name = "clause", description = "Displays the clauses of the Constitution of the United States")
+    async def clause(self, ctx: commands.Context, clause = None) -> None:
       if clause == None:
         await ctx.send("Invalid command!")
       elif clause == "commerce":

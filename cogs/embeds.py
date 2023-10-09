@@ -6,8 +6,8 @@ class Embeds(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
-    async def help(self, ctx, criteria = None):
+    @commands.hybrid_command(name = "help", description = "Shows the help menu for the bot's commands")
+    async def help(self, ctx: commands.Context, criteria = None) -> None:
       if criteria == None:
         embed = discord.Embed(
           title = "**Help Menu**", description = "Capitol Hill's Help Interface" , color = discord.Color.red())
@@ -39,8 +39,9 @@ class Embeds(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-    @commands.command()
-    async def rules(self, ctx):
+    @commands.hybrid_command(name = "rules", description = "Shows the rules for the server")
+    @commands.has_role(1060313658053361754)
+    async def rules(self, ctx: commands.Context) -> None:
       embed_statement = discord.Embed(title = "Capitol Hill's Mission Statement", description = "Capitol Hill is a community of people who want to explore and engage in the United States political system. You may interact as leaders, business people, the press, and regular citizens. We are united by our respect for each other and the goals of the server.", color = discord.Color.blurple())
       await ctx.send(embed=embed_statement)
       embed_rules = discord.Embed(title = "Capitol Hill Rules" , description = "These are the rules of Capitol Hill. Breaking any of these rules will result in a punishment, as determined by the class of the offense." , color = discord.Color.blue())
@@ -171,37 +172,78 @@ class Embeds(commands.Cog):
         )
       await ctx.send(embed = embed)
 
-    @commands.command()
-    async def party_brief(self, ctx, Name = None, Description = None, PartyLeader = None, PartyCharter = None, PartyIdeology = None, PolComp = None, Thumbnail = None, CustomColor = None):
+    @commands.hybrid_command(name = "party_brief", description = "Make an embed showing party briefs")
+    @commands.has_role(1060313658053361754)
+    async def party_brief(self, ctx: commands.Context, name = None, description = None, party_leader = None, party_charter = None, party_ideology = None, pol_comp = None, thumbnail = None, custom_color = None) -> None:
       sixteenIntegerHex = int(CustomColor.replace("#", ""), 16)
       readableHex = int(hex(sixteenIntegerHex), 0)
       embed = discord.Embed(
-        title = Name,
-        description = Description,
+        title = name,
+        description = description,
         color = readableHex
       )
       embed.add_field(
         name = "**Party Leader**",
-        value = PartyLeader,
+        value = party_leader,
         inline = False
       )
       embed.add_field(
         name = "**Party Charter**",
-        value = PartyCharter,
+        value = party_charter,
         inline = False
       )
       embed.add_field(
         name = "**Party Ideology**",
-        value = PartyIdeology,
+        value = party_ideology,
         inline = False
       )
       embed.add_field(
         name = "**Political Compass Position**",
-        value = PolComp,
+        value = pol_comp,
         inline = False
       )
-      embed.set_thumbnail(url = Thumbnail)
+      embed.set_thumbnail(url = thumbnail)
       await ctx.send(embed = embed)
+
+    @commands.hybrid_command(name = "team", description = "Creates an embed to give information about a server team!")
+    @commands.has_role(1060313658053361754)
+    async def team(self, ctx: commands.Context, team_name = None, team_description = None, team_lead: discord.Member = None, applications = None, logo = None) -> None:
+      if team_name == None:
+        await ctx.send("Please specify a team name!")
+        return
+      if team_description == None:
+        await ctx.send("Please specify a team description!")
+        return
+      if team_lead == None:
+        await ctx.send("Please specify a team lead!")
+        return
+      if logo == None:
+        await ctx.send("Please specify a logo link!")
+      else:
+        embed = discord.Embed(
+          title = team_name,
+          description = team_description,
+          color = discord.Color.blurple()
+        )
+        embed.add_field(
+          name = "**Team Lead**",
+          value = team_lead.mention,
+          inline = False
+        )
+        embed.add_field(
+          name = "**Accepting Applications?**",
+          value = applications,
+          inline = False
+        )
+        embed.set_thumbnail(url = logo)
+        await ctx.send(embed = embed)
+
+    @team.error
+    async def team_error(self, ctx: commands.Context, error):
+      if isinstance(error, commands.MissingRole):
+        await ctx.send("You don't have the required role to use this command!")
+      elif isinstance(error, commands.BadArgument):
+        await ctx.send("Please specify a valid color!")
 
 async def setup(bot):
   await bot.add_cog(Embeds(bot))

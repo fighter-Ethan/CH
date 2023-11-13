@@ -60,9 +60,5 @@ async def sync(
     await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
   
     
-<<<<<<< HEAD
 TOKEN = os.environ.get("DISCORD_TOKEN") 
-=======
-TOKEN = os.environ.get("DISCORD_BOT_SECRET")
->>>>>>> origin/main
 client.run(TOKEN)

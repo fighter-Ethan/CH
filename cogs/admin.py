@@ -6,7 +6,7 @@ class Admin(commands.Cog):
     def __init__(self, client):
         self.client = client
   
-    @commands.hybrid_command(name="kick", description="Kicks a member from the server. Must be a member of Server Staff to execute this command!.")
+    @commands.hybrid_command(name="kick", description="Kicks a member from the server. Must be a member of Server Staff to execute this command!.") 
     @commands.has_role(1060313658053361754)
     async def kick(self, ctx: commands.Context, member: discord.Member, *, reason=None) -> None:
       await member.kick(reason=reason)

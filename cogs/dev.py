@@ -23,10 +23,13 @@ class Dev(commands.Cog):
         color = discord.Color.green()
       )
       await ctx.send(embed=embed)
+<<<<<<< HEAD
 
     @commands.hybrid_command(name = "support", description = "Sends a link to financially support the bot!")
     async def support(self, ctx: commands.Context) -> None:
       await ctx.reply("Go to the link below to help support my development!" + "\n\u200b" + "- Capitol Hill Bot" + "\n\u200b" + "https://www.buymeacoffee.com/fighterethan")
+=======
+>>>>>>> origin/main
       
 async def setup(bot):
   await bot.add_cog(Dev(bot))

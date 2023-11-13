@@ -7,7 +7,10 @@ import time
 import asyncio
 import datetime
 from typing import Literal
+<<<<<<< HEAD
 import datetime
+=======
+>>>>>>> origin/main
 from datetime import datetime, timedelta
 
 class economy(commands.Cog):
@@ -97,7 +100,11 @@ class economy(commands.Cog):
         else:
           await ctx.send("Cancelled! Your account is still open.")
       except KeyError:
+<<<<<<< HEAD
         await ctx.send("You don't seem to have an account yet! Open one by using `.open_account`.")
+=======
+        await ctx.send("You don't seem to have an account yet!")
+>>>>>>> origin/main
 
     @commands.hybrid_command(name="balance", description = "View the balance of a player!", aliases = ["bal"])
     @app_commands.describe(
@@ -109,7 +116,11 @@ class economy(commands.Cog):
       if user == None:
         user = ctx.author
       if not f"{user.id}" in bank:
+<<<<<<< HEAD
         await ctx.send("This user does not have an account! Open one by using the command `.open_account`.")
+=======
+        await ctx.send("This user does not have an account!")
+>>>>>>> origin/main
       else:
         net_worth = bank[str(user.id)]["wallet"] + bank[str(user.id)]["bank"]
         balance = discord.Embed(
@@ -165,6 +176,7 @@ class economy(commands.Cog):
       if isinstance(error, commands.MissingRole):
         await ctx.send("You do not have the required role to use this command!")
 
+<<<<<<< HEAD
     @commands.hybrid_command(name="money_party", description = "Gives money to all users in the economy system!")
     @commands.has_role(1060315345266683955)
     async def money_party(self, ctx: commands.Context, amount = None) -> None:
@@ -179,6 +191,8 @@ class economy(commands.Cog):
           with open(f"cogs/bank.json", "w") as f:
             bank = json.dump(bank, f)
 
+=======
+>>>>>>> origin/main
     @commands.hybrid_command(name="remove_money", description = "Remove money from a player!")  
     @app_commands.describe(
       user = "The user you want to remove money from",
@@ -219,7 +233,11 @@ class economy(commands.Cog):
         with open(f"cogs/bank.json", "r") as f:
           bank = json.load(f)
         if not f"{ctx.author.id}" in bank:
+<<<<<<< HEAD
           await ctx.send("You do not have an account! Make one by typing `.open_account`!")
+=======
+          await ctx.send("You do not have an account!")
+>>>>>>> origin/main
         elif amount != "all" and bank[str(ctx.author.id)]["wallet"] < int(amount):
           await ctx.send("You do not have that much money in your wallet!")
         else:
@@ -255,7 +273,11 @@ class economy(commands.Cog):
         with open(f"cogs/bank.json", "r") as f:
           bank = json.load(f)
         if not f"{ctx.author.id}" in bank:
+<<<<<<< HEAD
           await ctx.send("You do not have an account! Create one by doing `.open_account`.")
+=======
+          await ctx.send("You do not have an account!")
+>>>>>>> origin/main
         elif amount != "all" and bank[str(ctx.author.id)]["bank"] < int(amount):
           await ctx.send("You do not have that much money in your bank!")
         else:
@@ -290,7 +312,11 @@ class economy(commands.Cog):
         bank = json.load(f)
       amount = random.randint(100, 500)
       if not f"{ctx.author.id}" in bank:
+<<<<<<< HEAD
         await ctx.send("You do not have an account! Open one with `.open_account`.")
+=======
+        await ctx.send("You do not have an account!")
+>>>>>>> origin/main
       else:
         bank[str(ctx.author.id)]["wallet"] += amount
         work = discord.Embed(
@@ -332,7 +358,11 @@ class economy(commands.Cog):
         )
         await ctx.reply(embed = error)
       if not f"{ctx.author.id}" in bank:
+<<<<<<< HEAD
         await ctx.send("You do not have an account! Open one with `.open_account`.")
+=======
+        await ctx.send("You do not have an account!")
+>>>>>>> origin/main
       elif not f"{member.id}" in bank:
         await ctx.send("That user does not have an account!")
       else:
@@ -366,6 +396,7 @@ class economy(commands.Cog):
         )
         error.set_footer(text = f"{ctx.author.name}")
         await ctx.reply(embed = error)
+<<<<<<< HEAD
       if isinstance(error, commands.CommandOnCooldown):
         minutes, seconds = divmod(error.retry_after, 60)
         hours, minutes = divmod(minutes, 60)
@@ -376,6 +407,17 @@ class economy(commands.Cog):
         )
         embed.set_footer(text = f"{ctx.author.name}" , icon_url = ctx.author.avatar.url)
         await ctx.reply(embed = embed)
+=======
+      remaining_time = str(datetime.timedelta(seconds=int(error.retry_after)))
+      if isinstance(error, commands.CommandOnCooldown):
+        error = discord.Embed(
+          title = "Cooldown",
+          description = f"You are on cooldown! Try again in {remaining_time}",
+          color = discord.Color.red()
+        )
+        error.set_footer(text = f"{ctx.author.name}")
+        await ctx.reply(embed = error)
+>>>>>>> origin/main
         
     @commands.hybrid_command(name="slots", description="Play slots!")
     @app_commands.describe(
@@ -404,7 +446,11 @@ class economy(commands.Cog):
         await ctx.reply(embed = error)
       else:
         if not f"{ctx.author.id}" in bank:
+<<<<<<< HEAD
           await ctx.send("You do not have an account! Create one with `.open_account`!")
+=======
+          await ctx.send("You do not have an account!")
+>>>>>>> origin/main
         else:
           if amount > bank[str(ctx.author.id)]["wallet"]:
             error = discord.Embed(
@@ -803,7 +849,10 @@ class economy(commands.Cog):
       Sen = discord.utils.get(ctx.guild.roles, name="Senator")
       Pres = discord.utils.get(ctx.guild.roles, name="President")
       VP = discord.utils.get(ctx.guild.roles, name="Vice President")
+<<<<<<< HEAD
       Gov = discord.utils.get(ctx.guild.roles, name="Governor")
+=======
+>>>>>>> origin/main
       salaryview = discord.Embed(
         title = "Salary View",
         description = f"{ctx.author.name}'s Salary",
@@ -812,7 +861,11 @@ class economy(commands.Cog):
       salaryview.set_thumbnail(url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWbQEuDAu9kTn--3IRg-Urne7t93iPGuP2UedRmMcQKa_l8MOk2toXOP19eu2y_85ysSk&usqp=CAU")
       salaryview.set_footer(text = f"{ctx.author.name}")
       user = ctx.author
+<<<<<<< HEAD
       if not Rep in user.roles and not Sen in user.roles and not Pres in user.roles and not VP in user.roles and not Gov in user.roles:
+=======
+      if not Rep in user.roles and not Sen in user.roles and not Pres in user.roles and not VP in user.roles:
+>>>>>>> origin/main
         salaryview.add_field(
           name = "Salary",
           value = "You do not have a job!",
@@ -832,6 +885,7 @@ class economy(commands.Cog):
           inline = False
         )
         await ctx.reply(embed = salaryview)
+<<<<<<< HEAD
       elif Gov in user.roles:
         salaryview.add_field(
           name = "Salary",
@@ -839,6 +893,8 @@ class economy(commands.Cog):
           inline = False
         )
         await ctx.reply(embed = salaryview)
+=======
+>>>>>>> origin/main
       elif Pres in user.roles:
         salaryview.add_field(
           name = "Salary",
@@ -863,9 +919,13 @@ class economy(commands.Cog):
       Sen = discord.utils.get(ctx.guild.roles, name="Senator")
       Pres = discord.utils.get(ctx.guild.roles, name="President")
       VP = discord.utils.get(ctx.guild.roles, name="Vice President")
+<<<<<<< HEAD
       Gov = discord.utils.get(ctx.guild.roles, name="Governor")
       LtGov = discord.utils.get(ctx.guild.roles, name="Lt. Governor")
       if not Rep in ctx.author.roles and not Sen in ctx.author.roles and not Pres in ctx.author.roles and not VP in ctx.author.roles and not Gov in ctx.author.roles and not LtGov in ctx.author.roles:
+=======
+      if not Rep in ctx.author.roles and not Sen in ctx.author.roles and not Pres in ctx.author.roles and not VP in ctx.author.roles:
+>>>>>>> origin/main
         collectview = discord.Embed(
           title = "Income Could Not Be Collected!",
           description = f"You do not have a job, and your income could therefore not be collected!",
@@ -874,6 +934,7 @@ class economy(commands.Cog):
         collectview.set_thumbnail(url = "https://as2.ftcdn.net/v2/jpg/00/02/91/03/1000_F_2910336_yP4opz0fBKz9XpL0WgqMeBL8WJpUIJ.jpg")
         collectview.set_footer(text = f"{ctx.author.name}", icon_url = ctx.author.avatar_url)
         await ctx.reply(embed = collectview)
+<<<<<<< HEAD
       elif LtGov in ctx.author.roles:
         collectview = discord.Embed(
           title = "Income Collected!",
@@ -885,6 +946,8 @@ class economy(commands.Cog):
         with open(f"cogs/bank.json", "w") as f:
           json.dump(bank, f)
         await ctx.reply(embed = collectview)
+=======
+>>>>>>> origin/main
       elif Rep in ctx.author.roles:
         collectview = discord.Embed(
         title = "Income Collected!",
@@ -897,6 +960,7 @@ class economy(commands.Cog):
         with open(f"cogs/bank.json", "w") as f:
           json.dump(bank, f)
         await ctx.reply(embed = collectview)
+<<<<<<< HEAD
       elif Gov in ctx.author.roles:
         collectview = discord.Embed(
         title = "Income Collected!",
@@ -909,6 +973,8 @@ class economy(commands.Cog):
         with open(f"cogs/bank.json", "w") as f:
           json.dump(bank, f)
         await ctx.reply(embed = collectview)
+=======
+>>>>>>> origin/main
       elif Sen in ctx.author.roles:
         collectview = discord.Embed(
         title = "Income Collected!",

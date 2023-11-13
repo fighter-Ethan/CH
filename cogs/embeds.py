@@ -1,7 +1,10 @@
 import discord
 from discord.ext import commands
 import asyncio
+<<<<<<< HEAD
 from typing import Literal
+=======
+>>>>>>> origin/main
 
 class Embeds(commands.Cog):
     def __init__(self, client):
@@ -18,7 +21,11 @@ class Embeds(commands.Cog):
         embed.add_field(name = "**yapms**" , value = "Sends the link to Yet Another Political Map Simulator" + "\n\u200b")
         embed.add_field(name = "**potus [number]**" , value = "Displays info about the selected president." + "\n\u200b" , inline = True)
         embed.add_field(name = "**help love**", value = "Shows the help menu for the love commands!")
+<<<<<<< HEAD
         embed.add_field(name = "**help economy**", value = "Shows the help menu for the economy commands!")
+=======
+        embed.add_field(name = "**help economy**", value = "Shows the help menu for the economy commands! (Coming soon)")
+>>>>>>> origin/main
         embed.set_footer(text = f"Requested by {ctx.author.name}")
         await ctx.reply(embed=embed)
       elif criteria == "love":
@@ -35,6 +42,7 @@ class Embeds(commands.Cog):
       elif criteria == "economy":
         embed = discord.Embed(
           title = "**Economy Help Menu**", 
+<<<<<<< HEAD
           description = "Economy Help" , 
           color = discord.Color.red()
         )
@@ -123,6 +131,11 @@ class Embeds(commands.Cog):
           value = "Pay a player an amount of money.",
           inline = False
         )
+=======
+          description = "COMING SOON!" , 
+          color = discord.Color.red()
+        )
+>>>>>>> origin/main
         await ctx.reply(embed=embed)
 
     @commands.hybrid_command(name = "rules", description = "Shows the rules for the server")
@@ -229,6 +242,7 @@ class Embeds(commands.Cog):
       embed.set_footer(text = "Capitol Hill House")
       embed.set_thumbnail(url = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Seal_of_the_United_States_House_of_Representatives.svg/1030px-Seal_of_the_United_States_House_of_Representatives.svg.png")
       await ctx.send(embed=embed)
+<<<<<<< HEAD
 
     @commands.hybrid_command(name="scotus", description="Make an embed showing the SCOTUS Composition!")
     async def scotus(
@@ -379,6 +393,36 @@ class Embeds(commands.Cog):
           inline = False
         )
       await ctx.send(embed=embed)
+=======
+  
+    @commands.hybrid_command(name="custom_embed", description = "Create a custom embed!")
+    async def custom_embed(self, ctx: commands.Context, title = None, description = None, body_title_1 = None, body_text_1 = None, body_title_2 = None, body_text_2 = None, body_title_3 = None, body_text_3 = None, thumbnail = None, footertext = None) -> None:
+      embed = discord.Embed(
+        title = title,
+        description = description,
+        color = discord.Color.blue()
+      )
+      embed.add_field(
+        name = bodytitle,
+        value = bodytext,
+        inline = False
+      )
+      embed.set_thumbnail(url = thumbnail)
+      embed.set_footer(text = footertext)
+      if body_title_2 != None:
+        embed.add_field(
+          name = body_title_2,
+          value = body_text_2,
+          inline = False
+        )
+      if body_title_3 != None:
+        embed.add_field(
+          name = body_title_3,
+          value = body_text_3,
+          inline = False
+        )
+      await ctx.send(embed = embed)
+>>>>>>> origin/main
 
     @commands.hybrid_command(name = "party_brief", description = "Make an embed showing party briefs")
     @commands.has_role(1060313658053361754)

@@ -15,7 +15,7 @@ from datetime import datetime, timedelta
 
 class economy(commands.Cog):
     def __init__(self, client):
-        self.client = client
+        self.client = client 
 
 
   

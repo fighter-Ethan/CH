@@ -9,14 +9,11 @@ class Fun(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-<<<<<<< HEAD
     @commands.hybrid_command(name="wiki", description = "Search the server wiki for a page!")
     async def wiki(self, ctx: commands.Context, *, search = None):
       url = f"https://capitol-hill.fandom.com/wiki/" + search.replace(" ", "_")
       await ctx.reply(url)
   
-=======
->>>>>>> origin/main
     @commands.hybrid_command(name="compatibility", description = "Tests the romantic compatibility of two users!", aliases = ["compat" , "lovers"])
     async def compatibility(self, ctx: commands.Context, user1 : discord.Member , user2 : discord.Member) -> None:
       if user1.mention == "<@978047356983455815>" or user2.mention == "<@978047356983455815>":

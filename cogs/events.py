@@ -28,7 +28,6 @@ class Events(commands.Cog):
         await message.add_reaction(":Aye:1117197441381437562")
         await message.add_reaction(":Nay:1117192973109698590")
         await message.add_reaction(":Abstain:1117196931123388496")
-<<<<<<< HEAD
       elif message.channel.id == 1166431702332219443:
         if message.author.id == 1117224998537547817:
           return
@@ -43,9 +42,7 @@ class Events(commands.Cog):
           embedmessage = await message.channel.send(embed = embed)
           await embedmessage.add_reaction("<:upvote:1166434149373059102>")
           await embedmessage.add_reaction("️<:downvote:1166434161213571113>")
-=======
->>>>>>> origin/main
-  
+
 async def setup(bot):
   await bot.add_cog(Events(bot))
   print("My Events Listener Cog Has Successfully Loaded!")

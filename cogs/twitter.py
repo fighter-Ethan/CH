@@ -45,7 +45,10 @@ class twitter(commands.Cog):
           font5 = ImageFont.truetype('cogs/Cantarell-Bold.ttf', 20)
           draw = ImageDraw.Draw(img)
           message_tweet = str(message.content)
-          wrapped = textwrap.wrap(message_tweet, width=70)
+          if message.attachments:
+            wrapped = textwrap.wrap(message_tweet, width=40)
+          else:
+            wrapped = textwrap.wrap(message_tweet, width= 60)
           wrapped_message = '\n'.join(wrapped)
           draw.text((90, 140), wrapped_message, box_width=50, fill='black',font=font2)
           draw.text((111, 111), message.author.name, fill='gray', font=font2)
@@ -54,6 +57,16 @@ class twitter(commands.Cog):
           timestamp = datetime.now()
           est = str(timestamp.astimezone(timezone).strftime("%I:%M:%S %p EST • %B %d"))
           draw.text((20, 230), est, fill='gray', font=font2)
+          if message.attachments:
+            attachment = message.attachments[0]
+            url = attachment.url
+            async with self.session.get(url) as resp:
+              attachment_data = await resp.read()
+            with open("attachment.png", "wb") as f:
+              f.write(attachment_data)     
+            attachment = Image.open("attachment.png")
+            attachment = attachment.resize((200, 175), Image.LANCZOS)
+            img.paste(attachment, (400, 75), attachment)
           img.save('Tweet.png')
           react_here = await message.channel.send(file=discord.File('Tweet.png'))
           await react_here.add_reaction("❤️")

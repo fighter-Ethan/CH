@@ -45,10 +45,15 @@ class twitter(commands.Cog):
           font5 = ImageFont.truetype('cogs/Cantarell-Bold.ttf', 20)
           draw = ImageDraw.Draw(img)
           message_tweet = str(message.content)
+          mentions = message.mentions
+          output = message_tweet
+          for member in mentions:
+              # Replace does not modify, it returns a new string.
+              output = output.replace(f"<@{member.id}>", f"@{member.display_name}")
           if message.attachments:
-            wrapped = textwrap.wrap(message_tweet, width=40)
+            wrapped = textwrap.wrap(output, width=40)
           else:
-            wrapped = textwrap.wrap(message_tweet, width= 60)
+            wrapped = textwrap.wrap(output, width= 60)
           wrapped_message = '\n'.join(wrapped)
           draw.text((90, 140), wrapped_message, box_width=50, fill='black',font=font2)
           draw.text((111, 111), message.author.name, fill='gray', font=font2)

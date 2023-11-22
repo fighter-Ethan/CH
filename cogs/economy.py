@@ -8,7 +8,7 @@ import asyncio
 import datetime
 from typing import Literal
 import datetime
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 class economy(commands.Cog):
     def __init__(self, client):
@@ -382,15 +382,6 @@ class economy(commands.Cog):
         )
         embed.set_footer(text = f"{ctx.author.name}" , icon_url = ctx.author.avatar.url)
         await ctx.reply(embed = embed)
-      remaining_time = str(datetime.timedelta(seconds=int(error.retry_after)))
-      if isinstance(error, commands.CommandOnCooldown):
-        error = discord.Embed(
-          title = "Cooldown",
-          description = f"You are on cooldown! Try again in {remaining_time}",
-          color = discord.Color.red()
-        )
-        error.set_footer(text = f"{ctx.author.name}")
-        await ctx.reply(embed = error)
         
     @commands.hybrid_command(name="slots", description="Play slots!")
     @app_commands.describe(
@@ -606,7 +597,7 @@ class economy(commands.Cog):
       await ctx.reply(embed = shop)
 
     @commands.hybrid_command(name="buy", description="Buy from the server store!")
-    async def buy(self, ctx: commands.Context, item, amount: int = 1) -> None:
+    async def buy(self, ctx: commands.Context, item: Literal["Business Down Payment","Empty Storefront","News Studio", "Small "], amount: int = 1) -> None:
       with open(f"cogs/bank.json", "r") as f:
         bank = json.load(f)
       with open(f"cogs/inventory.json", "r") as f:
@@ -710,7 +701,7 @@ class economy(commands.Cog):
       item = "The item you want to use",
       amount = "The amount of the item you want to use",
     )
-    async def use(self, ctx: commands.Context, item, amount: int = 1) -> None:
+    async def use(self, ctx: commands.Context, item: Literal["Business Down Payment","Empty Storefront", "News Studio", "Small Apartment"], amount: int = 1) -> None:
       with open(f"cogs/inventory.json", "r") as f:
         inventory = json.load(f)
 
@@ -976,6 +967,31 @@ class economy(commands.Cog):
         )
         embed.set_footer(text = f"{ctx.author.name}" , icon_url = ctx.author.avatar.url)
         await ctx.reply(embed = embed)
+
+    @commands.hybrid_command(name="clean_economy", description="Removes the people who are no longer in the server from the economy module.")
+    @commands.has_role("*")
+    async def clean_economy(self, ctx: commands.Context) -> None:
+      with open("cogs/bank.json", "r") as f:
+        bank = json.load(f)
+      await ctx.send("Are you SURE?")
+      def check(m):
+        return m.author == ctx.author and m.channel == ctx.channel
+      msg = await self.client.wait_for("message", check=check, timeout=60.0)
+      if msg.content.lower() == "yes":
+        await ctx.send("Cleaning economy...")
+        await asyncio.sleep(2.0)
+        users_to_remove = [user_id for user_id, user_data in bank.items() if int(user_id) not in [member.id for member in ctx.guild.members]]
+        ###
+        for user_id in users_to_remove:
+          del bank[user_id]
+        ###
+        with open("cogs/bank.json", "w") as f:
+          json.dump(bank, f)
+        await ctx.send("Done!")
+      else:
+        await ctx.send("Cancelled!")
+
+
 
 async def setup(bot):
     await bot.add_cog(economy(bot))

@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
+from typing import Literal
 
 class Politics(commands.Cog):
     def __init__(self, client):
@@ -319,7 +321,38 @@ class Politics(commands.Cog):
         await ctx.send("Please include a color for the Administration.")
       await ctx.send(embed=embed)
 
+    @commands.hybrid_command(name = "senate_composition", description = "Shows the makeup of the current Senate!")
+    @app_commands.describe(
+      control = "Shows which caucus currently has a majority",
+      demcaucus = "Lists the number of Democrat-aligned Senators",
+      repcaucus = "Lists the number of Republican-aligned Senators",
+      img = "A URL to a flourish.studio image.",
+    )
+    async def senate_composition(self, ctx: commands.Context, control: Literal["Democratic", "Republican", "None"], demcaucus: Literal["0", "1", "2", "3", "4", "5", "6"], repcaucus: Literal["0", "1", "2", "3", "4", "5", "6"], img) -> None:
+      if control == "Democratic":
+        embed = discord.Embed(
+          title = "Senate Composition",
+          description = f"🔵 Democrat Majority",
+          color = discord.Color.blue()
+        )
+      elif control == "Republican":
+        embed = discord.Embed(
+          title = "Senate Composition",
+          description = f"🔴 Republican Majority",
+          color = discord.Color.red()
+        )
+      elif control == "None":
+        embed = discord.Embed(
+          title = "Senate Composition",
+          description = f"⚪️ No Majority",
+          color = discord.Color.blurple()
+        )
+      embed.add_field(name = "Democratic Caucus", value = f"{demcaucus}", inline = True)
+      embed.add_field(name = "Republican Caucus", value = f"{repcaucus}", inline = True)
+      embed.set_image(url = img)
+      await ctx.send(embed = embed)
 
+        
 
 async def setup(bot):
   await bot.add_cog(Politics(bot))

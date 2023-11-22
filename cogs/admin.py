@@ -50,6 +50,7 @@ class Admin(commands.Cog):
       embed.set_footer(text = f"Verified by {ctx.author.name}")
       embed.set_image(url = "https://i.imgur.com/ged66wF.png")
       await welcomechat.send(embed=embed)
+      await welcomechat.send("<@&1175490044665008138>")
   
       
 

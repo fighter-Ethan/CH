@@ -43,6 +43,11 @@ class Events(commands.Cog):
           await embedmessage.add_reaction("<:upvote:1166434149373059102>")
           await embedmessage.add_reaction("️<:downvote:1166434161213571113>")
 
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+      if isinstance(error, commands.CommandNotFound):
+        await ctx.reply("That command doesn't exist!")
+
 async def setup(bot):
   await bot.add_cog(Events(bot))
   print("My Events Listener Cog Has Successfully Loaded!")

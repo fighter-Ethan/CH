@@ -61,6 +61,7 @@ class economy(commands.Cog):
         inventory[ctx.author.id]["news_station"] = 0
         inventory[ctx.author.id]["empty_storefront"] = 0
         inventory[ctx.author.id]["business_down_payment"] = 0
+        inventory[ctx.author.id]["law_tuition"] = 0
         await ctx.send("Inventory Initialized!")
       else:
         await ctx.send("You already have an account!")
@@ -591,13 +592,14 @@ class economy(commands.Cog):
       shop.add_field(name = "**Empty Storefront** - $5,000/irl two weeks", value = "A place to start your business!", inline = False)
       shop.add_field(name = "**Business Down-Payment** - $10,000", value = "This item will allow you to create a business!", inline = False)
       shop.add_field(name = "**Small Apartment** - $12,000/irl two weeks", value = "A small apartment to live in." , inline = False)
+      shop.add_field(name = "**Law School Tuition** - $220,335", value = "Tuition to attend Law School. In four irp years, you'll be able to take the Bar Exam and get a degree!", inline = False)
       shop.set_thumbnail(url = "https://i.imgur.com/LIKZo8O.png")
       user = ctx.author
       shop.set_footer(text = f"{ctx.author.name}" + " | Page 1/1", icon_url = user.display_avatar.url)
       await ctx.reply(embed = shop)
 
     @commands.hybrid_command(name="buy", description="Buy from the server store!")
-    async def buy(self, ctx: commands.Context, item: Literal["Business Down Payment","Empty Storefront","News Studio", "Small "], amount: int = 1) -> None:
+    async def buy(self, ctx: commands.Context, item: Literal["Business Down Payment","Empty Storefront","News Studio", "Small Apartment", "Law School Tuition"], amount: int = 1) -> None:
       with open(f"cogs/bank.json", "r") as f:
         bank = json.load(f)
       with open(f"cogs/inventory.json", "r") as f:
@@ -646,6 +648,14 @@ class economy(commands.Cog):
           await ctx.reply(f"You bought {amount} small apartment lease(s) for" + " ${:,}!".format(amount * 12000))
         else:
           await ctx.reply("You don't have enough money in your wallet to buy this item!")
+
+      elif item.lower() == "law school tuition":
+        if bank[str(ctx.author.id)]["wallet"] >= (amount * 220335):
+          bank[str(ctx.author.id)]["wallet"] -= (amount * 220335)
+          inventory[str(ctx.author.id)]["law_tuition"] += amount
+          await ctx.reply(f"You bought {amount} law school tuition(s) for " + " ${:,}!".format(amount * 220335))
+        else:
+          await ctx.reply("You don't have enough money in your wallet to buy this item!")
           
       else:
         await ctx.reply("This item is not in the shop!")
@@ -668,6 +678,7 @@ class economy(commands.Cog):
       news_inv = int(inventory[str(user.id)]["news_station"])
       emp_inv = int(inventory[str(user.id)]["empty_storefront"])
       bus_inv = int(inventory[str(user.id)]["business_down_payment"])
+      tuition_inv = int(inventory[str(user.id)]["law_tuition"])
       
       inv = discord.Embed(
         title = "Inventory",
@@ -686,6 +697,9 @@ class economy(commands.Cog):
       if bus_inv > 0:
         inv.add_field(name = "Business Down Payment (x" + str(bus_inv) + ")", value = "Down payment that is redeemable for a business, if you have all the other necessities!", inline = False)
 
+      if tuition_inv > 0:
+        inv.add_field(name = "Law School Tuition (x" + str(tuition_inv) + ")", value = "Tuition used to attend law school, and eventually get a law degree!", inline = False)
+
       inv.set_thumbnail(url = "https://i.imgur.com/tAjhb3X.png")
       inv.set_footer(text = f"{user.name} | Page 1/1", icon_url = user.display_avatar.url)      
       await ctx.reply(embed = inv)
@@ -701,7 +715,7 @@ class economy(commands.Cog):
       item = "The item you want to use",
       amount = "The amount of the item you want to use",
     )
-    async def use(self, ctx: commands.Context, item: Literal["Business Down Payment","Empty Storefront", "News Studio", "Small Apartment"], amount: int = 1) -> None:
+    async def use(self, ctx: commands.Context, item: Literal["Business Down Payment","Empty Storefront", "News Studio", "Small Apartment", "Law School Tuition"], amount: int = 1) -> None:
       with open(f"cogs/inventory.json", "r") as f:
         inventory = json.load(f)
 
@@ -709,6 +723,7 @@ class economy(commands.Cog):
       news_amt = int(inventory[str(ctx.author.id)]["news_station"])
       emp_amt = int(inventory[str(ctx.author.id)]["empty_storefront"])
       bus_amt = int(inventory[str(ctx.author.id)]["business_down_payment"])
+      tuition_amt = int(inventory[str(ctx.author.id)]["law_tuition"])
         
       if item.lower() == "small apartment" or item.lower() == "small apartment lease":
         if apt_amt >= amount:
@@ -740,6 +755,14 @@ class economy(commands.Cog):
             inventory = json.dump(inventory, f)
         elif emp_amt < amount:
           await ctx.reply("You don't have enough empty storefront leases!")
+      elif item.lower() == "Law School Tuition":
+        if tuition_amt >= amount:
+          inventory[str(ctx.author.id)]["law_tuition"] -= int(amount)
+          await ctx.reply(f"You signed the lease for {amount} degree plans in law school! You now have {amount} year(s) to study and eventually take the bar!")
+          with open(f"cogs/inventory.json", "w") as f:
+            inventory = json.dump(inventory, f)
+        elif tuition_amt < amount:
+          await ctx.reply("You don't have enough Law School Tuitions!")
       elif item.lower() == "business down payment":
         if amount > 1:
           await ctx.reply("You can only redeem one business down payment at a time!")
@@ -990,6 +1013,18 @@ class economy(commands.Cog):
         await ctx.send("Done!")
       else:
         await ctx.send("Cancelled!")
+
+    @commands.hybrid_command(name = "update_shop", description = "An administrative command used to update everyone's inventories when the shop is updated!")
+    @commands.has_role("*")
+    async def update_shop(self, ctx: commands.Context) -> None:
+      with open("cogs/inventory.json", "r") as f:
+        inventory = json.load(f)
+      for user_id, user_data in inventory.items():
+        if user_id in inventory:
+          inventory[user_id]["law_tuition"] = 0
+          with open("cogs/inventory.json", "w") as f:
+            json.dump(inventory, f)
+          await ctx.send("Done!")
 
 
 

@@ -19,7 +19,6 @@ class Embeds(commands.Cog):
         embed.add_field(name = "**potus [number]**" , value = "Displays info about the selected president." + "\n\u200b" , inline = True)
         embed.add_field(name = "**help love**", value = "Shows the help menu for the love commands!")
         embed.add_field(name = "**help economy**", value = "Shows the help menu for the economy commands!")
-        embed.add_field(name = "**help economy**", value = "Shows the help menu for the economy commands! (Coming soon)")
         embed.set_footer(text = f"Requested by {ctx.author.name}")
         await ctx.reply(embed=embed)
       elif criteria == "love":
@@ -130,6 +129,7 @@ class Embeds(commands.Cog):
     @commands.has_role(1060313658053361754)
     async def rules(self, ctx: commands.Context) -> None:
       embed_statement = discord.Embed(title = "Capitol Hill's Mission Statement", description = "Capitol Hill is a community of people who want to explore and engage in the United States political system. You may interact as leaders, business people, the press, and regular citizens. We are united by our respect for each other and the goals of the server.", color = discord.Color.blurple())
+      embed_statement.add_field(name = "\n\u200b", value = "[Our Charter](https://docs.google.com/document/d/189USHb88OqDZlrXp1wbCCjLAMB3UcirDiSOx_iMvQgc/edit?usp=sharing)", inline = False)
       await ctx.send(embed=embed_statement)
       embed_rules = discord.Embed(title = "Capitol Hill Rules" , description = "These are the rules of Capitol Hill. Breaking any of these rules will result in a punishment, as determined by the class of the offense." , color = discord.Color.blue())
       embed_rules.add_field(name = "\n\u200b", value = "**1)** Follow [The Terms of Service for Discord](https://discord.com/terms). [Class Varies]", inline = False)

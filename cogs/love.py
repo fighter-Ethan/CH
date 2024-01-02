@@ -24,7 +24,7 @@ class Love(commands.Cog):
         if msg.content.lower() == "yes":
           await ctx.send(f"{member.mention} has accepted the proposal from {ctx.author.mention}. They are now engaged!" + "\n\u200b" + "https://media3.giphy.com/media/l1J9yTco40EU5JzTW/giphy.gif?cid=6c09b952l6lp90s60owsv428kkljleksr4puxuylxe6bekwi&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=g")
           user = ctx.author
-          with open(".gitignore/engaged.json", "r") as f:
+          with open("json/engaged.json", "r") as f:
             engaged = json.load(f)
             if not f"{user.id}" in engaged:
               engaged[f"{user.id}"] = {}
@@ -32,7 +32,7 @@ class Love(commands.Cog):
             if not f"{member.id}" in engaged:
               engaged[f"{member.id}"] = {}
               engaged[f"{member.id}"]["partner"] = user.id
-            with open(".gitignore/engaged.json", "w") as f:
+            with open("json/engaged.json", "w") as f:
               engaged = json.dump(engaged, f)
         elif msg.content.lower() == "no":
           await ctx.send(f"{member.mention} has declined the proposal from {ctx.author.mention}." + "\n\u200b")
@@ -53,7 +53,7 @@ class Love(commands.Cog):
         if msg.content.lower() == "yes":
           await ctx.send(f"{member.mention} has accepted the date from {ctx.author.mention}. They are now dating!") 
           user = ctx.author
-          with open(".gitignore/dating.json", "r") as f:
+          with open("json/dating.json", "r") as f:
             dating = json.load(f)
             if not f"{user.id}" in dating:
               dating[f"{user.id}"] = {}
@@ -61,7 +61,7 @@ class Love(commands.Cog):
             if not f"{member.id}" in dating:
               dating[f"{member.id}"] = {}
               dating[f"{member.id}"]["partner"] = user.id
-            with open(".gitignore/dating.json", "w") as f:
+            with open("json/dating.json", "w") as f:
               dating = json.dump(dating, f)
               await member.send(f"{ctx.author.mention} has accepted your date request.")
         elif msg.content.lower() == "no":
@@ -106,12 +106,12 @@ class Love(commands.Cog):
         await asyncio.sleep(5)
         await ctx.channel.purge(limit=2)
       else:
-        with open(".gitignore/marriage.json", "r") as f:
+        with open("json/marriage.json", "r") as f:
           marriage_laws = json.load(f)
         marriage_laws[state] = {
           "status": status
         }
-        with open(".gitignore/marriage.json", "w") as f:
+        with open("json/marriage.json", "w") as f:
           json.dump(marriage_laws, f, indent=4)
     
         await ctx.send(f"The marriage laws for {state} have been updated.")
@@ -119,11 +119,11 @@ class Love(commands.Cog):
     @commands.hybrid_command(name="marry", description = "Marry two users together")
     @commands.has_role("Priest")
     async def marry(self, ctx: commands.Context, member : discord.Member, user : discord.Member) -> None:
-      with open(".gitignore/married.json", "r") as f:
+      with open("json/married.json", "r") as f:
         married = json.load(f)
-      with open(".gitignore/gender.json", "r") as f:
+      with open("json/gender.json", "r") as f:
         gender = json.load(f)
-      with open(".gitignore/marriage.json", "r") as f:
+      with open("json/marriage.json", "r") as f:
         law = json.load(f)
       if member.bot or user.bot:
         await ctx.send("You can't marry a bot!")
@@ -165,7 +165,7 @@ class Love(commands.Cog):
                   if not f"{member.id}" in married:
                     married[f"{member.id}"] = {}
                     married[f"{member.id}"]["partner"] = user.id
-                  with open(".gitignore/married.json", "w") as f:
+                  with open("json/married.json", "w") as f:
                     married = json.dump(married, f)
                   await ctx.send(f"{member.mention} and {user.mention} have married!")
                 elif msg.content.lower() == "no":
@@ -195,7 +195,7 @@ class Love(commands.Cog):
                   if not f"{member.id}" in married:
                     married[f"{member.id}"] = {}
                     married[f"{member.id}"]["partner"] = user.id
-                  with open(".gitignore/married.json", "w") as f:
+                  with open("json/married.json", "w") as f:
                     married = json.dump(married, f)
                   await ctx.send(f"{member.mention} and {user.mention} have married!")
                 elif msg.content.lower() == "no":
@@ -225,7 +225,7 @@ class Love(commands.Cog):
                   if not f"{member.id}" in married:
                     married[f"{member.id}"] = {}
                     married[f"{member.id}"]["partner"] = user.id
-                  with open(".gitignore/married.json", "w") as f:
+                  with open("json/married.json", "w") as f:
                     married = json.dump(married, f)
                   await ctx.send(f"{member.mention} and {user.mention} have married!")
                 elif msg.content.lower() == "no":
@@ -240,7 +240,7 @@ class Love(commands.Cog):
 
     @commands.hybrid_command(name = "gender", description = "Set or view your gender")
     async def gender(self, ctx: commands.Context, *, criterion = None) -> None:
-      with open('.gitignore/gender.json', 'r') as f:
+      with open('json/gender.json', 'r') as f:
         gender = json.load(f)
       if criterion == None:
         if not f'{ctx.author.id}' in gender:
@@ -267,16 +267,16 @@ class Love(commands.Cog):
             await ctx.send("Sorry, right now only Male, Female, and Non-Binary are recognized by the bot. Please reach out to an admin to get your preferred gender added!")
         elif f'{ctx.author.id}' in gender:
           await ctx.send("Your gender is already set! To change it, please contact server staff.")
-        with open('.gitignore/gender.json', 'w') as f:
+        with open('json/gender.json', 'w') as f:
           gender = json.dump(gender, f)
 
     @commands.hybrid_command(name = "partner", description = "View your partnership status")
     async def partner(self, ctx: commands.Context) -> None:
-      with open(".gitignore/engaged.json", "r") as f:
+      with open("json/engaged.json", "r") as f:
         engaged = json.load(f)
-      with open(".gitignore/dating.json", "r") as f:
+      with open("json/dating.json", "r") as f:
         dating = json.load(f)
-      with open(".gitignore/married.json", "r") as f:
+      with open("json/married.json", "r") as f:
         married = json.load(f)
       user = ctx.author
       engaged_text = engaged.get(f"{user.id}", {}).get("partner")  
@@ -320,11 +320,11 @@ class Love(commands.Cog):
   
     @commands.hybrid_command(name = "breakup", description = "Break up with a user", aliases = ["break_up"])
     async def breakup(self, ctx: commands.Context) -> None:
-      with open(".gitignore/engaged.json", "r") as f:
+      with open("json/engaged.json", "r") as f:
         engaged = json.load(f)
-      with open(".gitignore/dating.json", "r") as f:
+      with open("json/dating.json", "r") as f:
         dating = json.load(f)
-      with open(".gitignore/married.json", "r") as f:
+      with open("json/married.json", "r") as f:
         married = json.load(f)
       user = ctx.author
       married_text = married.get(f"{user.id}", {}).get("partner")
@@ -333,34 +333,34 @@ class Love(commands.Cog):
       if engaged_text is not None:
         await ctx.send(f"You have broken up with <@" + str(engaged_text) + ">.")
         del engaged[f"{user.id}"]
-        with open(".gitignore/engaged.json", "w") as f:
+        with open("json/engaged.json", "w") as f:
           engaged = json.dump(engaged, f)
       elif dating_text is not None:
         await ctx.send(f"You have broken up with <@" + str(dating_text) + ">.")
         del dating[f"{user.id}"]
-        with open(".gitignore/dating.json", "w") as f:
+        with open("json/dating.json", "w") as f:
           dating = json.dump(dating, f)
       elif married_text is not None:
         await ctx.send("You cannot break up with your spouse! Divorce them iinstead with `.divorce`.")
 
     @commands.hybrid_command(name = "divorce", description = "Divorce your spouse")
     async def divorce(self, ctx: commands.Context) -> None:
-      with open(".gitignore/married.json", "r") as f:
+      with open("json/married.json", "r") as f:
         married = json.load(f)
-      with open(".gitignore/engaged.json", "r") as f:
+      with open("json/engaged.json", "r") as f:
         engaged = json.load(f)
-      with open(".gitignore/dating.json", "r") as f:
+      with open("json/dating.json", "r") as f:
         dating = json.load(f)
       married_text = married.get(f"{ctx.author.id}", {}).get("partner")
       if married_text is not None:
         del married[f"{ctx.author.id}"]
         del engaged[f"{ctx.author.id}"]
         del dating[f"{ctx.author.id}"]
-        with open(".gitignore/married.json", "w") as f:
+        with open("json/married.json", "w") as f:
           married = json.dump(married, f)
-        with open(".gitignore/engaged.json", "w") as f:
+        with open("json/engaged.json", "w") as f:
           engaged = json.dump(engaged, f)
-        with open(".gitignore/dating.json", "w") as f:
+        with open("json/dating.json", "w") as f:
           dating = json.dump(dating, f)
         await ctx.send(f"{ctx.author.mention} has divorced <@" + str(married_text) + ">.")
       elif married_text is None:

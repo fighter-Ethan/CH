@@ -18,7 +18,7 @@ class economy(commands.Cog):
 
     @commands.hybrid_command(name="leaderboard", description="View the top ten richest players!", aliases = ["lb", "top"])
     async def leaderboard(self, ctx: commands.Context) -> None:
-      with open(".gitignore/bank.json", "r") as f:
+      with open("json/bank.json", "r") as f:
         bank = json.load(f)
       net_worths = {user_id: info['wallet'] + info['bank'] for user_id, info in bank.items()}
       top_10_net_worths = dict(sorted(net_worths.items(), key=lambda item: item[1], reverse=True)[:10])
@@ -46,9 +46,9 @@ class economy(commands.Cog):
 
     @commands.hybrid_command(name="open_account", description="Open an account for economy purposes.")
     async def open_account(self, ctx: commands.Context) -> None:
-      with open(".gitignore/bank.json", "r") as f:
+      with open("json/bank.json", "r") as f:
         bank = json.load(f)
-      with open(".gitignore/inventory.json", "r") as f:
+      with open("json/inventory.json", "r") as f:
         inventory = json.load(f)
       if f"{ctx.author.id}" not in bank:
         bank[ctx.author.id] = {}
@@ -65,16 +65,16 @@ class economy(commands.Cog):
         await ctx.send("Inventory Initialized!")
       else:
         await ctx.send("You already have an account!")
-      with open(".gitignore/bank.json", "w") as f:
+      with open("json/bank.json", "w") as f:
         bank = json.dump(bank, f)
-      with open(f".gitignore/inventory.json", "w") as f:
+      with open(f"json/inventory.json", "w") as f:
         inventory = json.dump(inventory, f)
 
     @commands.hybrid_command(name = "close_account", description = "Close your account.")
     async def close_account(self, ctx: commands.Context) -> None:
-      with open(f".gitignore/bank.json", "r") as f:
+      with open(f"json/bank.json", "r") as f:
         bank = json.load(f)
-      with open(f".gitignore/inventory.json", "r") as f:
+      with open(f"json/inventory.json", "r") as f:
         inventory = json.load(f)
       check = discord.Embed(
       title = "**WAIT!**",
@@ -88,9 +88,9 @@ class economy(commands.Cog):
         if msg.content == "yes":
           bank.pop(str(ctx.author.id))
           inventory.pop(str(ctx.author.id))
-          with open(f".gitignore/bank.json", "w") as f:
+          with open(f"json/bank.json", "w") as f:
             bank = json.dump(bank, f)
-          with open(f".gitignore/inventory.json", "w") as f:
+          with open(f"json/inventory.json", "w") as f:
             inventory = json.dump(inventory, f)
           await ctx.send("Account closed!")
         elif msg.content == "no":
@@ -106,7 +106,7 @@ class economy(commands.Cog):
       user = "The user you want to view the balance of.",
     )
     async def balance(self, ctx: commands.Context, user : discord.Member = None) -> None:
-      with open(f".gitignore/bank.json", "r") as f:
+      with open(f"json/bank.json", "r") as f:
         bank = json.load(f)
       if user == None:
         user = ctx.author
@@ -145,7 +145,7 @@ class economy(commands.Cog):
       amount = "The amount of money you want to add",
     )
     async def add_money(self, ctx: commands.Context, user : discord.Member = None, amount = None) -> None:
-      with open(f".gitignore/bank.json", "r") as f:
+      with open(f"json/bank.json", "r") as f:
         bank = json.load(f)
       if amount == None:
         await ctx.send("Please specify an amount!")
@@ -159,7 +159,7 @@ class economy(commands.Cog):
             user = ctx.author
           bank[str(user.id)]["wallet"] += int(amount)
           await ctx.send("Added ${:,}".format(int(amount)) + f" to {user.mention}'s wallet!")
-          with open(f".gitignore/bank.json", "w") as f:
+          with open(f"json/bank.json", "w") as f:
             bank = json.dump(bank, f)
 
     @add_money.error
@@ -170,7 +170,7 @@ class economy(commands.Cog):
     @commands.hybrid_command(name="money_party", description = "Gives money to all users in the economy system!")
     @commands.has_role(1060315345266683955)
     async def money_party(self, ctx: commands.Context, amount = None) -> None:
-      with open(".gitignore/bank.json", "r") as f:
+      with open("json/bank.json", "r") as f:
         bank = json.load(f)
       if amount == None:
         await ctx.send("Please specify an amount!")
@@ -178,7 +178,7 @@ class economy(commands.Cog):
         for user in bank:
           bank[str(user)]["wallet"] += int(amount)
           await ctx.send("Added ${:,}".format(int(amount)) + f" to all users!")
-          with open(f".gitignore/bank.json", "w") as f:
+          with open(f"json/bank.json", "w") as f:
             bank = json.dump(bank, f)
 
     @commands.hybrid_command(name="remove_money", description = "Remove money from a player!")  
@@ -188,7 +188,7 @@ class economy(commands.Cog):
     )
     @commands.has_role(1060315345266683955)
     async def remove_money(self, ctx: commands.Context, user : discord.Member = None, amount = None) -> None:
-      with open(f".gitignore/bank.json", "r") as f:
+      with open(f"json/bank.json", "r") as f:
         bank = json.load(f)
       if amount == None:
         await ctx.send("Please specify an amount!")
@@ -202,7 +202,7 @@ class economy(commands.Cog):
             user = ctx.author
           bank[str(user.id)]["wallet"] -= int(amount)
           await ctx.send("Removed ${:,}".format(int(amount)) + f" from {user.mention}'s wallet!")
-          with open(f".gitignore/bank.json", "w") as f:
+          with open(f"json/bank.json", "w") as f:
             bank = json.dump(bank, f)
 
     @remove_money.error
@@ -218,7 +218,7 @@ class economy(commands.Cog):
       if amount == None:
         await ctx.send("Please specify an amount!")
       else:
-        with open(f".gitignore/bank.json", "r") as f:
+        with open(f"json/bank.json", "r") as f:
           bank = json.load(f)
         if not f"{ctx.author.id}" in bank:
           await ctx.send("You do not have an account! Make one by typing `.open_account`!")
@@ -247,7 +247,7 @@ class economy(commands.Cog):
             )
             deposit.set_footer(text = f"Requested by {ctx.author.name}")
             await ctx.reply(embed = deposit)
-          with open(f".gitignore/bank.json", "w") as f:
+          with open(f"json/bank.json", "w") as f:
             bank = json.dump(bank, f)
 
     @commands.hybrid_command(name = "withdraw", description = "Withdraw money from your bank!", aliases = ["with", "w"])
@@ -255,7 +255,7 @@ class economy(commands.Cog):
       if amount == None:
         await ctx.send("Please specify an amount!")
       else:
-        with open(f".gitignore/bank.json", "r") as f:
+        with open(f"json/bank.json", "r") as f:
           bank = json.load(f)
         if not f"{ctx.author.id}" in bank:
           await ctx.send("You do not have an account! Create one by doing `.open_account`.")
@@ -284,13 +284,13 @@ class economy(commands.Cog):
             )
             withdraw.set_footer(text = f"Requested by {ctx.author.name}")
             await ctx.reply(embed = withdraw)
-          with open(f".gitignore/bank.json", "w") as f:
+          with open(f"json/bank.json", "w") as f:
             bank = json.dump(bank, f)
 
     @commands.hybrid_command(name="work", description="Work for money!")
     @commands.cooldown(1, 5400, commands.BucketType.user)
     async def work(self, ctx: commands.Context) -> None:
-      with open(f".gitignore/bank.json", "r") as f:
+      with open(f"json/bank.json", "r") as f:
         bank = json.load(f)
       amount = random.randint(100, 500)
       if not f"{ctx.author.id}" in bank:
@@ -305,7 +305,7 @@ class economy(commands.Cog):
         )
         work.set_footer(text = f"{ctx.author.name}")
         await ctx.reply(embed = work)
-        with open(f".gitignore/bank.json", "w") as f:
+        with open(f"json/bank.json", "w") as f:
           bank = json.dump(bank, f)
 
     @work.error
@@ -327,7 +327,7 @@ class economy(commands.Cog):
     @commands.cooldown(1, 10800, commands.BucketType.user)
     async def rob(self, ctx: commands.Context, member: discord.Member = None) -> None:
       rob_fail = ["Caught!", "Caught Red-Handed", "You Were Caught!"]
-      with open(f".gitignore/bank.json", "r") as f:
+      with open(f"json/bank.json", "r") as f:
         bank = json.load(f)
       if member == None:
         error = discord.Embed(
@@ -359,7 +359,7 @@ class economy(commands.Cog):
           )
           caught.set_footer(text = f"{ctx.author.name}")
           await ctx.reply(embed = caught)
-        with open(f".gitignore/bank.json", "w") as f:
+        with open(f"json/bank.json", "w") as f:
           bank = json.dump(bank, f)
 
     @rob.error
@@ -388,7 +388,7 @@ class economy(commands.Cog):
       amount = "The amount you want to bet."
     )
     async def slots(self, ctx: commands.Context, amount: int = None) -> None:
-      with open(f".gitignore/bank.json", "r") as f:
+      with open(f"json/bank.json", "r") as f:
         bank = json.load(f)
       slot_emotes = ["🍍", "💸", "💰", "🧽", "🍬"]
       choice1 = random.choice(slot_emotes)
@@ -460,7 +460,7 @@ class economy(commands.Cog):
               slots2.set_footer(text = f"{ctx.author.name}", icon_url = ctx.author.display_avatar.url)
               await msg.edit(embed = slots2)
               bank[str(ctx.author.id)]["wallet"] += amount
-              with open(f".gitignore/bank.json", "w") as f:
+              with open(f"json/bank.json", "w") as f:
                 json.dump(bank, f)
             else:
               slots3 = discord.Embed(
@@ -481,7 +481,7 @@ class economy(commands.Cog):
             slots3.set_footer(text = f"{ctx.author.name}", icon_url = ctx.author.display_avatar.url)
             await msg.edit(embed = slots3)
             bank[str(ctx.author.id)]["wallet"] -= amount
-            with open(f".gitignore/bank.json", "w") as f:
+            with open(f"json/bank.json", "w") as f:
               json.dump(bank, f)
 
     @commands.hybrid_command(name="roulette", description="Play a game of roulette!")
@@ -496,7 +496,7 @@ class economy(commands.Cog):
         winning_color_text = "red"
       elif winning_color == "⬛️":
         winning_color_text = "black"
-      with open(f".gitignore/bank.json", "r") as f:
+      with open(f"json/bank.json", "r") as f:
         bank = json.load(f)
       if color == None:
         error = discord.Embed(
@@ -565,7 +565,7 @@ class economy(commands.Cog):
           )
           roulettewin.set_footer(text = "You won ${:,}!".format(int(amount)))
           bank[str(ctx.author.id)]["wallet"] += int(amount)
-          with open(f".gitignore/bank.json", "w") as f:
+          with open(f"json/bank.json", "w") as f:
             json.dump(bank, f)
           await msg.edit(embed = roulettewin)
         else:
@@ -577,7 +577,7 @@ class economy(commands.Cog):
           roulettelose.set_footer(text = "You lost ${:,}.".format(int(amount)))
           bank[str(ctx.author.id)]["wallet"] -= int(amount)
           await msg.edit(embed = roulettelose)
-          with open(f".gitignore/bank.json", "w") as f:
+          with open(f"json/bank.json", "w") as f:
             json.dump(bank, f)
 
     @commands.hybrid_command(name="store", description="Buy from the server store!",aliases = ["shop"])
@@ -598,11 +598,11 @@ class economy(commands.Cog):
 
     @commands.hybrid_command(name="buy", description="Buy from the server store!")
     async def buy(self, ctx: commands.Context, item: Literal["Business Down Payment","Empty Storefront","News Station", "Small Apartment", "Law School Tuition"], amount: int = 1) -> None:
-      with open(f".gitignore/bank.json", "r") as f:
+      with open(f"json/bank.json", "r") as f:
         bank = json.load(f)
-      with open(f".gitignore/inventory.json", "r") as f:
+      with open(f"json/inventory.json", "r") as f:
         inventory = json.load(f)
-      with open(f".gitignore/store.json", "r") as f:
+      with open(f"json/store.json", "r") as f:
         store = json.load(f)
 
       for key, value in store.items():
@@ -615,9 +615,9 @@ class economy(commands.Cog):
             inventory[str(ctx.author.id)][f"{item_parsed}"] += amount
             await ctx.reply(f"You bought {amount} {item}(s).")
 
-      with open(f".gitignore/bank.json", "w") as f:
+      with open(f"json/bank.json", "w") as f:
         json.dump(bank, f)
-      with open(f".gitignore/inventory.json", "w") as f:
+      with open(f"json/inventory.json", "w") as f:
         json.dump(inventory, f)
 
     @commands.hybrid_command(name = "inventory", description = "Access your inventory!", aliases = ["inv"])
@@ -625,7 +625,7 @@ class economy(commands.Cog):
       user = "The user you want to view the inventory of."
     )
     async def inventory(self, ctx: commands.Context, user : discord.Member = None) -> None:
-      with open(f".gitignore/inventory.json", "r") as f:
+      with open(f"json/inventory.json", "r") as f:
         inventory = json.load(f)
       if user == None:
         user = ctx.author
@@ -670,7 +670,7 @@ class economy(commands.Cog):
       amount = "The amount of the item you want to use",
     )
     async def use(self, ctx: commands.Context, item: Literal["Business Down Payment","Empty Storefront", "News Station", "Small Apartment", "Law School Tuition"], amount: int = 1) -> None:
-      with open(f".gitignore/inventory.json", "r") as f:
+      with open(f"json/inventory.json", "r") as f:
         inventory = json.load(f)
       for key, value in inventory.items():
           item_parsed = item.lower().replace(" ", "_")
@@ -679,7 +679,7 @@ class economy(commands.Cog):
           else:
             inventory[str(ctx.author.id)][f"{item_parsed}"] -= amount
             await ctx.reply(f"You used {amount} {item}!")
-            with open(f".gitignore/inventory.json", "w") as f:
+            with open(f"json/inventory.json", "w") as f:
               json.dump(inventory, f)
 
     @use.error
@@ -698,12 +698,12 @@ class economy(commands.Cog):
       elif user.bot:
         await ctx.reply("You can't pay bots!")
       else:
-        with open(f".gitignore/bank.json", "r") as f:
+        with open(f"json/bank.json", "r") as f:
           bank = json.load(f)
         if bank[str(ctx.author.id)]["wallet"] >= amount:
           bank[str(ctx.author.id)]["wallet"] -= int(amount)
           bank[str(user.id)]["wallet"] += int(amount)
-          with open(f".gitignore/bank.json", "w") as f:
+          with open(f"json/bank.json", "w") as f:
             json.dump(bank, f)
           await ctx.reply(f"You paid {user.mention} " + "${:,}!".format(int(amount)))
         elif bank[str(ctx.author.id)]["wallet"] < amount:
@@ -723,12 +723,12 @@ class economy(commands.Cog):
       elif user == None:
         await ctx.reply("You need to specify a user to gift something to!")
       else:
-        with open(f".gitignore/inventory.json", "r") as f:
+        with open(f"json/inventory.json", "r") as f:
           inventory = json.load(f)
         if inventory[str(ctx.author.id)]["small_apartment"] >= amount:
           inventory[str(ctx.author.id)]["small_apartment"] -= int(amount)
           inventory[str(user.id)]["small_apartment"] += int(amount)
-          with open(f".gitignore/inventory.json", "w") as f:
+          with open(f"json/inventory.json", "w") as f:
             inventory = json.dump(inventory, f)
           await ctx.reply(f"You gifted {user.mention} {amount} small apartment leases!")
         elif inventory[str(ctx.author.id)]["small_apartment"] < amount:
@@ -795,7 +795,7 @@ class economy(commands.Cog):
     @commands.hybrid_command(name = "collect", description = "Collect your salary!")
     @commands.cooldown(1, 86400, commands.BucketType.user)
     async def collect(self, ctx: commands.Context) -> None:
-      with open(f".gitignore/bank.json", "r") as f:
+      with open(f"json/bank.json", "r") as f:
         bank = json.load(f)
       Rep = discord.utils.get(ctx.guild.roles, name="Representative")
       Sen = discord.utils.get(ctx.guild.roles, name="Senator")
@@ -821,7 +821,7 @@ class economy(commands.Cog):
         )
         collectview.set_footer(text = f"{ctx.author.name}")
         bank[str(ctx.author.id)]["wallet"] += 7142
-        with open(f".gitignore/bank.json", "w") as f:
+        with open(f"json/bank.json", "w") as f:
           json.dump(bank, f)
         await ctx.reply(embed = collectview)
       elif Rep in ctx.author.roles:
@@ -833,7 +833,7 @@ class economy(commands.Cog):
         collectview.set_thumbnail(url = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Seal_of_the_United_States_House_of_Representatives.svg/1030px-Seal_of_the_United_States_House_of_Representatives.svg.png")
         collectview.set_footer(text = f"{ctx.author.name}")
         bank[f"{ctx.author.id}"]["wallet"] += 12714
-        with open(f".gitignore/bank.json", "w") as f:
+        with open(f"json/bank.json", "w") as f:
           json.dump(bank, f)
         await ctx.reply(embed = collectview)
       elif Gov in ctx.author.roles:
@@ -845,7 +845,7 @@ class economy(commands.Cog):
         collectview.set_thumbnail(url = "https://www.transportation.gov/sites/dot.gov/files/NGA_Logo_CMYK_0.JPG")
         collectview.set_footer(text = f"{ctx.author.name}")
         bank[f"{ctx.author.id}"]["wallet"] += 10500
-        with open(f".gitignore/bank.json", "w") as f:
+        with open(f"json/bank.json", "w") as f:
           json.dump(bank, f)
         await ctx.reply(embed = collectview)
       elif Sen in ctx.author.roles:
@@ -857,7 +857,7 @@ class economy(commands.Cog):
         collectview.set_thumbnail(url = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Seal_of_the_United_States_Senate.svg/1200px-Seal_of_the_United_States_Senate.svg.png")
         collectview.set_footer(text = f"{ctx.author.name}")
         bank[f"{ctx.author.id}"]["wallet"] += 12714
-        with open(f".gitignore/bank.json", "w") as f:
+        with open(f"json/bank.json", "w") as f:
           json.dump(bank, f)
         await ctx.reply(embed = collectview)
       elif VP in ctx.author.roles:
@@ -869,7 +869,7 @@ class economy(commands.Cog):
         collectview.set_thumbnail(url = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Seal_of_the_Vice_President_of_the_United_States.svg/200px-Seal_of_the_Vice_President_of_the_United_States.svg.png")
         collectview.set_footer(text = f"{ctx.author.name}")
         bank[f"{ctx.author.id}"]["wallet"] += 17478
-        with open(f".gitignore/bank.json", "w") as f:
+        with open(f"json/bank.json", "w") as f:
           json.dump(bank, f)
         await ctx.reply(embed = collectview)
       elif Pres in ctx.author.roles:
@@ -881,7 +881,7 @@ class economy(commands.Cog):
         collectview.set_thumbnail(url = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Seal_of_the_President_of_the_United_States.svg/2424px-Seal_of_the_President_of_the_United_States.svg.png")
         collectview.set_footer(text = f"{ctx.author.name}")
         bank[f"{ctx.author.id}"]["wallet"] += 28571
-        with open(f".gitignore/bank.json", "w") as f:
+        with open(f"json/bank.json", "w") as f:
           json.dump(bank, f)
         await ctx.reply(embed = collectview)
 
@@ -901,7 +901,7 @@ class economy(commands.Cog):
     @commands.hybrid_command(name="clean_economy", description="Removes the people who are no longer in the server from the economy module.")
     @commands.has_role("*")
     async def clean_economy(self, ctx: commands.Context) -> None:
-      with open(".gitignore/bank.json", "r") as f:
+      with open("json/bank.json", "r") as f:
         bank = json.load(f)
       await ctx.send("Are you SURE?")
       def check(m):
@@ -915,7 +915,7 @@ class economy(commands.Cog):
         for user_id in users_to_remove:
           del bank[user_id]
         ###
-        with open(".gitignore/bank.json", "w") as f:
+        with open("json/bank.json", "w") as f:
           json.dump(bank, f)
         await ctx.send("Done!")
       else:
@@ -924,12 +924,12 @@ class economy(commands.Cog):
     @commands.hybrid_command(name = "update_shop", description = "An administrative command used to update everyone's inventories when the shop is updated!")
     @commands.has_role("*")
     async def update_shop(self, ctx: commands.Context) -> None:
-      with open(".gitignore/inventory.json", "r") as f:
+      with open("json/inventory.json", "r") as f:
         inventory = json.load(f)
       for user_id, user_data in inventory.items():
         if user_id in inventory:
           inventory[user_id]["law_tuition"] = 0
-          with open(".gitignore/inventory.json", "w") as f:
+          with open("json/inventory.json", "w") as f:
             json.dump(inventory, f)
           await ctx.send("Done!")
 

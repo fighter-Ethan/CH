@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
+from typing import Literal
 
 class Admin(commands.Cog):
     def __init__(self, client):
@@ -26,7 +27,7 @@ class Admin(commands.Cog):
         await ctx.channel.purge(limit = amount + 1)
 
     @purge.error
-    async def purge_error(error, ctx):
+    async def purge_error(self, error, ctx):
       if isinstance(error, CheckFailure):
         await ctx.send(ctx.message.channel, "Looks like you don't have the permissions needed.")
 
@@ -82,6 +83,36 @@ class Admin(commands.Cog):
       embed.add_field(name = "**Comments**" , value = crit , inline = False)
       embed.set_footer(text = f"Denied by {ctx.author.name}")
       await ctx.send(embed = embed)
+
+    @commands.hybrid_command(name = "loa", description = "Sets the status of a staff member's LoA.")
+    @commands.has_role(1150928445426126848)
+    async def loa(self, ctx: commands.Context, member: discord.Member, status: Literal["Start","End"]) -> None:
+      if status == "Start":
+        LOA = discord.utils.get(ctx.guild.roles, name="Ask Staff")
+        LOA_2 = discord.utils.get(ctx.guild.roles, name="Admin Votes")
+        LOA_Role = discord.utils.get(ctx.guild.roles, name="Leave of Absence")
+        await member.remove_roles(LOA)
+        await member.remove_roles(LOA_2)
+        await member.add_roles(LOA_Role)
+        nickname = "[LoA] " + member.nick
+        await member.edit(nick=nickname)
+        await ctx.reply(f"Success! {member.name}'s LoA Status has been started!")
+      elif status == "End":
+        LOA = discord.utils.get(ctx.guild.roles, name="Ask Staff")
+        LOA_2 = discord.utils.get(ctx.guild.roles, name="Admin Votes")
+        LOA_Role = discord.utils.get(ctx.guild.roles, name="Leave of Absence")
+        await member.add_roles(LOA)
+        await member.add_roles(LOA_2)
+        await member.remove_roles(LOA_Role)
+        mn = str(member.nick)
+        print(mn)
+        nickname = mn[6:len(mn)]
+        print(nickname)
+        await member.edit(nick=nickname)
+        await ctx.reply(f"Success! {member.name}'s LoA Status has been ended!")
+        
+      
+        
 
 
 async def setup(bot):

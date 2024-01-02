@@ -12,7 +12,6 @@ class Events(commands.Cog):
     async def on_member_join(user):
       if user.id == "803101128433991732": 
         await user.ban(reason="User banned for breaking the rules.")
-
   
     @commands.Cog.listener()
     async def on_message(self, message):

@@ -5,7 +5,7 @@ import asyncio
 import os
 from typing import Literal, Optional
 from discord.ext import commands
-from discord.ext.commands import Greedy, Context  # or a subclass of yours
+from discord.ext.commands import Greedy, Context
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix=".", intents=intents)
@@ -18,9 +18,12 @@ load_dotenv()
 
 @client.event
 async def on_ready():
-  await client.change_presence(activity=discord.Activity(
-      type=discord.ActivityType.playing, name="Economy | .help"))
-  print('Bot is ready')
+  await client.change_presence(
+    activity=discord.Activity(
+    type=discord.ActivityType.playing, name="Economy | .help"
+    )
+  )
+  print('Bot is online')
   for f in os.listdir("./cogs"):
     if f.endswith(".py"):
       await client.load_extension("cogs." + f[:-3])
@@ -29,9 +32,7 @@ async def on_ready():
 @client.command()
 @commands.guild_only()
 @commands.is_owner()
-async def sync(ctx: Context,
-               guilds: Greedy[discord.Object],
-               spec: Optional[Literal["~", "*", "^"]] = None) -> None:
+async def sync(ctx: Context, guilds: Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
   if not guilds:
     if spec == "~":
       synced = await ctx.bot.tree.sync(guild=ctx.guild)
@@ -59,7 +60,7 @@ async def sync(ctx: Context,
     else:
       ret += 1
 
-  await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
+  await ctx.send(f"Commands Synced.")
 
 
 TOKEN = os.environ.get("DISCORD_TOKEN")

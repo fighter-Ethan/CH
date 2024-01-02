@@ -26,7 +26,10 @@ class Fun(commands.Cog):
         title = ":heart:Compatability Tester:heart:" , description = user1.mention + " + " + user2.mention, color  = discord.Color.green())
         embed.add_field(name = "Compatability Rate: " , value = str(loverate) + "%", inline = True)
         embed.set_thumbnail(url = "https://www.northeastohioparent.com/wp-content/uploads/2021/01/Cupid.png")
-        embed.set_footer(text = "Come up with a good ship name for these two lovebirds!") 
+        u1_str = str(user1.nick)
+        u2_str = str(user2.nick)
+        ship_name = "Ship Name: " + u1_str[:len(u1_str)//2] + u2_str[len(u2_str)//2:]
+        embed.set_footer(text = f"{ship_name}") 
         await ctx.send(embed=embed)
 
     @commands.hybrid_command(name = "dox", description = "Dox your enemies!")

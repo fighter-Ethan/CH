@@ -28,9 +28,9 @@ class twitter(commands.Cog):
           avatar_url = str(message.author.avatar.url)
           async with self.session.get(avatar_url) as resp:
             avatar_data = await resp.read()
-          with open("pfp.png", "wb") as f:
+          with open(".gitignore/pfp.png", "wb") as f:
             f.write(avatar_data)
-          pfp = Image.open("pfp.png").convert("RGBA")
+          pfp = Image.open(".gitignore/pfp.png").convert("RGBA")
           size = (75, 75)
           mask = Image.new("L", size, 0)
           draw = ImageDraw.Draw(mask)
@@ -38,17 +38,16 @@ class twitter(commands.Cog):
           pfp = ImageOps.fit(pfp, mask.size, centering=(0.5,0.5))
           pfp.putalpha(mask)
           pfp = pfp.resize(size, Image.LANCZOS)
-          img = Image.open('Tweet_Template.png') 
+          img = Image.open('.gitignore/Tweet_Template.png') 
           draw = ImageDraw.Draw(img)
           img.paste(pfp, (15, 70), pfp)
-          font2 = ImageFont.truetype('cogs/Cantarell-Regular.ttf', 20)
-          font5 = ImageFont.truetype('cogs/Cantarell-Bold.ttf', 20)
+          font2 = ImageFont.truetype('fonts/Cantarell-Regular.ttf', 20)
+          font5 = ImageFont.truetype('fonts/Cantarell-Bold.ttf', 20)
           draw = ImageDraw.Draw(img)
           message_tweet = str(message.content)
           mentions = message.mentions
           output = message_tweet
           for member in mentions:
-              # Replace does not modify, it returns a new string.
               output = output.replace(f"<@{member.id}>", f"@{member.display_name}")
           if message.attachments:
             wrapped = textwrap.wrap(output, width=40)
@@ -67,13 +66,13 @@ class twitter(commands.Cog):
             url = attachment.url
             async with self.session.get(url) as resp:
               attachment_data = await resp.read()
-            with open("attachment.png", "wb") as f:
+            with open(".gitignore/attachment.png", "wb") as f:
               f.write(attachment_data)     
             attachment = Image.open("attachment.png")
             attachment = attachment.resize((200, 175), Image.LANCZOS)
             img.paste(attachment, (400, 75), attachment)
-          img.save('Tweet.png')
-          react_here = await message.channel.send(file=discord.File('Tweet.png'))
+          img.save('.gitignore/Tweet.png')
+          react_here = await message.channel.send(file=discord.File('.gitignore/Tweet.png'))
           await react_here.add_reaction("❤️")
           await react_here.add_reaction("↪️")
 
